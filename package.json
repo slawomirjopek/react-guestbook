@@ -5,6 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.16.2",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^4.12.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2"
@@ -15,12 +18,16 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "react-dev-server": "^0.6.2",
+    "rimraf": "^2.6.2",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0"
   },
   "scripts": {
     "build:client": "webpack --config ./webpack/webpack.config.js",
-    "server:client": "npm run build:client && node server-client.js"
+    "clean": "rimraf build",
+    "server:api": "node ./src/server/api/api.js",
+    "server:client": "npm run build:client && node server-client.js",
+    "db": "mongod --dbpath database"
   },
   "repository": {
     "type": "git",
