@@ -5,15 +5,19 @@ require("babel-core/register")({
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
+const posts = require("./models/post");
 
 const app = new express();
 app.use(bodyParser.json());
 
-//@TODO connect to mongodb
-// api methods
+mongoose.connect(`mongodb://localhost:27017/guestbook`);
 
 app.get("/guestbook", (req, res) => {
-    // get all entries
+    const post = req.body;
+    posts.find(post, (err, data) => {
+        if (err) throw err;
+        res.json(data);
+    });
 });
 
 app.get("/guestbook/:id", (req, res) => {
