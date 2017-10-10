@@ -1,18 +1,22 @@
-var webpack = require("webpack");
-var WebpackDevServer = require("webpack-dev-server");
-var config = require("./webpack/webpack.config");
+const webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
+const webpackConfig = require("./webpack/webpack.config");
+const config = require("./config/config").getConfig("server");
 
-new WebpackDevServer(webpack(config), {
-    publicPath: config.output.publicPath,
+const port = config.client.port;
+const host = config.client.host;
+
+new WebpackDevServer(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath,
     contentBase: "static",
     historyApiFallback: true,
     stats: {
         colors: true
     }
-}).listen(3000, "0.0.0.0", function (err) {
+}).listen(port, host, function (err) {
     if (err) {
         console.log(err);
     }
 
-    console.log("Running at http://0.0.0.0:3000");
+    console.log("Running at http://" + host + ":" + port);
 });
