@@ -115,7 +115,7 @@ app.post(api + "/tag/", (req, res) => {
 });
 
 /**
- * @api {get} /guestbook/archive/:month 6. Gets all entries with tag/tags
+ * @api {get} /guestbook/archive/:month 6. Gets entries from archive
  * @apiName GetArchive
  * @apiGroup Entry
  * @apiParam {String} month - Month name
