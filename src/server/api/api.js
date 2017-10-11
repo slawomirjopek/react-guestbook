@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 const api = config("api").name;
 const db = config("database");
-const server = config("server").client;
+const server = config("server").api;
 
 mongoose.connect(`${db.host}:${db.port}/${db.name}`);
 
