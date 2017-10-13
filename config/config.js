@@ -6,7 +6,7 @@ var defaults = {
     },
     server: {
         api: {
-            port: 12647
+            port: 5900
         },
         client: {
             port: 3000,
