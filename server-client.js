@@ -1,10 +1,14 @@
 const webpack = require("webpack");
 const WebpackDevServer = require("webpack-dev-server");
 const webpackConfig = require("./webpack/webpack.config");
-const config = require("./config/config").getConfig("server");
+const config = require("./config/config");
 
-const port = config.client.port;
-const host = config.client.host;
+const serverConfig = config.getConfig("server");
+const apiConfig = config.getConfig("api");
+const clientPort = serverConfig.client.port;
+const clientHost = serverConfig.client.host;
+const apiPort = serverConfig.api.port;
+const apiHost = serverConfig.api.host;
 
 new WebpackDevServer(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
@@ -12,11 +16,18 @@ new WebpackDevServer(webpack(webpackConfig), {
     historyApiFallback: true,
     stats: {
         colors: true
+    },
+    proxy: {
+        [apiConfig.prefix]: {
+            target: `http://${apiHost}:${apiPort}`,
+            pathRewrite: {[`^${apiConfig.prefix}`] : ''},
+            secure: false
+        }
     }
-}).listen(port, host, function (err) {
+}).listen(clientPort, clientHost, function (err) {
     if (err) {
         console.log(err);
     }
 
-    console.log("Running at http://" + host + ":" + port);
+    console.log("Running at http://" + clientHost + ":" + clientPort);
 });

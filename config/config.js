@@ -6,16 +6,20 @@ var defaults = {
     },
     server: {
         api: {
-            port: 5900
+            port: 5900,
+            host: "localhost"
         },
         client: {
             port: 3000,
-            host: "0.0.0.0",
+            host: "localhost",
             contentBase: "static"
         }
     },
     api: {
-        name: "/guestbook"
+        name: {
+            guestbook: "guestbook"
+        },
+        prefix: "/api"
     }
 };
 

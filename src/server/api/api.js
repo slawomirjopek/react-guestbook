@@ -8,6 +8,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const posts = require("./models/post");
+const _ = require("lodash");
 
 const app = new express();
 app.use(cors());
@@ -31,7 +32,7 @@ mongoose.connect(`${db.host}:${db.port}/${db.name}`);
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(api, (req, res) => {
+app.get(getRoute(api.guestbook), (req, res) => {
     posts.find(responseHandler.bind(res));
 });
 
@@ -48,7 +49,7 @@ app.get(api, (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(api + "/:id", (req, res) => {
+app.get(getRoute(api.guestbook, "/:id"), (req, res) => {
     const query = {_id: req.params.id};
     posts.find(query, responseHandler.bind(res));
 });
@@ -71,7 +72,7 @@ app.get(api + "/:id", (req, res) => {
  * @apiSuccess {String[]} entry.tags Entry tags
  * @apiSuccess {String[]} entry.category Entry categories
  */
-app.post(api, (req, res) => {
+app.post(getRoute(api.guestbook), (req, res) => {
     const entry = req.body;
     posts.create(entry, responseHandler.bind(res));
 });
@@ -89,7 +90,7 @@ app.post(api, (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.post(api + "/category/", (req, res) => {
+app.post(getRoute(api.guestbook, "/category/"), (req, res) => {
     const categories = {category: req.body.category};
     // @TODO find by categories
     //posts.find(categories, responseHandler.bind(res));
@@ -108,7 +109,7 @@ app.post(api + "/category/", (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.post(api + "/tag/", (req, res) => {
+app.post(getRoute(api.guestbook, "/tag/"), (req, res) => {
     const tags = {tag: req.body.tag};
     // @TODO find by tags
     //posts.find(tags, responseHandler.bind(res));
@@ -127,7 +128,7 @@ app.post(api + "/tag/", (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(api + "/archive/:month", (req, res) => {
+app.get(getRoute(api.guestbook, "/archive/:month"), (req, res) => {
     // @TODO get all entries from selected month
 });
 
@@ -140,7 +141,7 @@ app.get(api + "/archive/:month", (req, res) => {
  * @apiSuccess {Number} response.n 0/1
  * @apiSuccess {Number} response.ok 0/1
  */
-app.delete(api + "/:id", (req, res) => {
+app.delete(getRoute(api.guestbook, "/:id"), (req, res) => {
     const query = {_id: req.params.id};
     posts.remove(query, responseHandler.bind(res));
 });
@@ -164,7 +165,7 @@ app.delete(api + "/:id", (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.put(api + "/:id", (req, res) => {
+app.put(getRoute(api.guestbook, "/:id"), (req, res) => {
     // @TODO edit entry
 });
 
@@ -175,4 +176,8 @@ app.listen(server.port, () => {
 function responseHandler(err, data) {
     if (err) throw err;
     this.json(data);
+}
+
+function getRoute(api, route) {
+    return _.isEmpty(route) ? `/${api}` : `/${api}/${route}`;
 }
