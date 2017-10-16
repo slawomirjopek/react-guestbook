@@ -33,7 +33,7 @@ class GuestBookPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        entries: state.entries.data,
+        entries: state.entries,
         fetched: state.fetched
     }
 };

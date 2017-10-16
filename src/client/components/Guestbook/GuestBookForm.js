@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { entryAdd } from "../../effects/guestbook";
 
 class GuestBookEntry extends Component {
     constructor() {
@@ -7,14 +9,19 @@ class GuestBookEntry extends Component {
 
     render() {
         return (
-            <form onSubmit={this.submitHandler}>
+            <form onSubmit={this.submitHandler.bind(this)}>
                 <input
                     name="name"
                     type="text"
                     placeholder="Your name"
                 />
+                <input
+                    name="title"
+                    type="text"
+                    placeholder="Title"
+                />
                 <textarea
-                    name="entry"
+                    name="content"
                     placeholder="Entry content..."
                 />
                 <button type="submit">Add entry</button>
@@ -26,8 +33,24 @@ class GuestBookEntry extends Component {
         e.preventDefault();
         const fromData = new FormData(e.target);
         const name = fromData.get("name");
-        const entry = fromData.get("entry");
+        const content = fromData.get("content");
+        const title = fromData.get("title");
+
+        // @TODO validate fields, add title, categories, tags
+        this.props.entryAdd({
+            author: name,
+            content: content,
+            title: title
+        })
     }
 }
 
-export default GuestBookEntry;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        entryAdd: (entry) => {
+            dispatch(entryAdd(entry))
+        }
+    }
+};
+
+export default connect(null, mapDispatchToProps)(GuestBookEntry)

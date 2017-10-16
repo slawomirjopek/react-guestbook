@@ -18,7 +18,7 @@ const reducer = (state = init, action) => {
         case TYPES.FETCH_RECEIVED:
             state = {
                 ...state,
-                entries: action.payload,
+                entries: action.payload.data,
                 loading: false,
                 fetched: true
             };
@@ -28,6 +28,13 @@ const reducer = (state = init, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            };
+            break;
+        case TYPES.ENTRY_UPDATED:
+            state = {
+                ...state,
+                entries: state.entries.concat(action.payload),
+                loading: false
             }
     }
     return state;

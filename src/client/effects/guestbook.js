@@ -1,16 +1,28 @@
 import axios from "axios";
-import { getEntries, entriesReceived, entriesFailed } from "../actions/guestbook";
+import actions from "../actions/guestbook";
 import config from "../../../config/config";
 
 const api = config.getConfig("api");
 
 const fetchEntries = () => (dispatch) => {
-    dispatch(getEntries());
+    dispatch(actions.getEntries());
     return axios.get(`${api.prefix}/${api.name.guestbook}`).then((res) => {
-        dispatch(entriesReceived(res));
+        dispatch(actions.entriesReceived(res));
     }, (err) => {
-        dispatch(entriesFailed(err));
+        dispatch(actions.entriesFailed(err));
     })
 };
 
-export { fetchEntries }
+const entryAdd = (entry) => (dispatch) => {
+    dispatch(actions.getEntries());
+    return axios.post(
+        `${api.prefix}/${api.name.guestbook}`,
+        entry
+    ).then((res) => {
+        dispatch(actions.entryUpdated(res.data));
+    }, (err) => {
+        dispatch(actions.entriesFailed(err));
+    })
+};
+
+export { fetchEntries, entryAdd }
