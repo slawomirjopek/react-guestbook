@@ -5,19 +5,23 @@ import GuestBookForm from "../Guestbook/GuestBookForm";
 import { connect } from "react-redux";
 
 class GuestBookPage extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
     }
 
     componentDidMount() {
-        this.props.fetchData();
+        if (!this.props.fetched) {
+            this.props.fetchData();
+        }
     }
 
     render() {
         return (
             <div>
                 <div className="pull-left">
-                    <GuestBookList/>
+                    {this.props.fetched &&
+                        <GuestBookList entries={this.props.entries}/>
+                    }
                 </div>
                 <div className="pull-right">
                     <GuestBookForm/>
@@ -29,7 +33,8 @@ class GuestBookPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        entries: state.entries
+        entries: state.entries.data,
+        fetched: state.fetched
     }
 };
 

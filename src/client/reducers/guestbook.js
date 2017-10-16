@@ -3,6 +3,7 @@ import TYPES from "../types/guestbook";
 const init = {
     entries: [],
     loading: false,
+    fetched: false,
     error: null
 };
 
@@ -18,7 +19,8 @@ const reducer = (state = init, action) => {
             state = {
                 ...state,
                 entries: action.payload,
-                loading: false
+                loading: false,
+                fetched: true
             };
             break;
         case TYPES.FETCH_FAILED:
