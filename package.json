@@ -56,7 +56,7 @@
     "title": "Guestbook API",
     "url": "",
     "sampleUrl": "http://localhost:12647",
-    "oder": [
+    "order": [
       "GetEntries",
       "GetEntry",
       "CreateEntry",
