@@ -5,18 +5,19 @@ import Footer from "./Footer";
 import GuestBookPage from "../Pages/GuestBookPage";
 import ContactPage from "../Pages/ContactPage";
 import NoRoutePage from "../Pages/NoRoutePage";
+import { Container } from "reactstrap";
 
 const Template = () => {
     return (
-        <div>
+        <div className="bg-light">
             <Header/>
-            <main>
+            <Container className="py-4">
                 <Switch>
                     <Route path="/" component={GuestBookPage} exact/>
                     <Route path="/contact" component={ContactPage}/>
                     <Route component={NoRoutePage}/>
                 </Switch>
-            </main>
+            </Container>
             <Footer/>
         </div>
     )

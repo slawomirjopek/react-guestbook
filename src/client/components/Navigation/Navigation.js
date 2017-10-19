@@ -1,18 +1,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { Nav, NavItem } from "reactstrap";
 
 const Navigation = () => {
     return (
-        <nav>
-            <ul>
-                <li>
-                    <NavLink to="/" activeClassName="active" exact>Guest book</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/contact" activeClassName="active">Contact</NavLink>
-                </li>
-            </ul>
-        </nav>
+        <Nav pills={true} className="my-2">
+            <NavItem>
+                <NavLink to="/" activeClassName="active" className="nav-link" exact>Guest book</NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>
+            </NavItem>
+        </Nav>
     )
 };
 
