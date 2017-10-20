@@ -7,8 +7,9 @@ const Header = () => {
         <header>
             <Container fluid={true} className="bg-primary text-center py-3">
                 <Row>
-                    <Col>
-                        <h1 className="text-light text-uppercase mb-0">Blog react app</h1>
+                    <Col className="text-light">
+                        <h1 className="text-uppercase mb-0">Guestbook</h1>
+                        <span>If you were here, leave a message :)</span>
                     </Col>
                 </Row>
             </Container>

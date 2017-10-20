@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { entryAdd } from "../../effects/guestbook";
+import { Form, FormGroup, Input, Button } from "reactstrap";
 
 class GuestBookEntry extends Component {
     constructor() {
@@ -9,23 +10,31 @@ class GuestBookEntry extends Component {
 
     render() {
         return (
-            <form onSubmit={this.submitHandler.bind(this)}>
-                <input
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                />
-                <input
-                    name="title"
-                    type="text"
-                    placeholder="Title"
-                />
-                <textarea
-                    name="content"
-                    placeholder="Entry content..."
-                />
-                <button type="submit">Add entry</button>
-            </form>
+            <Form onSubmit={this.submitHandler.bind(this)}>
+                <h2 className="h4 mb-3">Leave a messsage</h2>
+                <FormGroup>
+                    <Input
+                        name="name"
+                        type="text"
+                        placeholder="Your name"
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Input
+                        name="title"
+                        type="text"
+                        placeholder="Title"
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Input
+                        type="textarea"
+                        name="content"
+                        placeholder="Message"
+                    />
+                </FormGroup>
+                <Button type="submit">Add entry</Button>
+            </Form>
         )
     }
 

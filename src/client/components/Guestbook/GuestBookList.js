@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import Moment from 'react-moment';
 import { Jumbotron } from "reactstrap";
 
 const GuestBookList = (props) => {
@@ -6,8 +7,10 @@ const GuestBookList = (props) => {
         <Jumbotron key={key} className="px-4 py-4">
             <header>
                 <h3 className="display-4">{entry.title}</h3>
-                <span className="author">{entry.author}</span>
-                <span className="date">{entry.date}</span>
+                <div className="clearfix">
+                    <span className="float-sm-left">{entry.author}</span>
+                    <Moment className="float-sm-right d-block" format="DD-MM-YYYY HH:mm">{entry.date}</Moment>
+                </div>
             </header>
 
             <hr className="my-2" />
