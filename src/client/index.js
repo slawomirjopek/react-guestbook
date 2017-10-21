@@ -9,7 +9,7 @@ import reducers from "./reducers/guestbook";
 import Template from "./components/Template/Template";
 import 'bootstrap/dist/css/bootstrap.css';
 
-const store = createStore(reducers, applyMiddleware(logger, thunk));
+const store = createStore(reducers, applyMiddleware(/*logger, */thunk));
 
 ReactDOM.render(
     <Provider store={store}>
