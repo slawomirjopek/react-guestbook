@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Moment from 'react-moment';
-import { Jumbotron } from "reactstrap";
+import { Jumbotron, Button } from "reactstrap";
 
 const GuestBookList = (props) => {
     const entries = props.entries.map((entry, key) => (
@@ -22,7 +22,14 @@ const GuestBookList = (props) => {
             <hr className="my-2" />
 
             <div className="tags">
-                {entry.tags}
+                {entry.tags.map((tag, key) =>
+                    <Button key={key}
+                            color="primary"
+                            size="sm"
+                            className="mr-1"
+                            disabled
+                    >{tag}</Button>
+                )}
             </div>
         </Jumbotron>
     ));
