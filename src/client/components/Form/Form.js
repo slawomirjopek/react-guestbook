@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form } from "reactstrap";
+const _ = require("lodash");
 
 const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
     return class extends Component {
@@ -13,7 +14,6 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
         }
 
         render() {
-            console.log(this.state);
             return (
                 <Form
                     onSubmit={this.submitHandler.bind(this)}
@@ -31,10 +31,11 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             let fields = {};
 
             fieldsState.map((field) => {
-                fields = {...fields, [field]: {
+                fields = {...fields, [field.name]: {
                     value: "",
                     valid: false,
-                    errors: []
+                    errors: [],
+                    rules: field.rules
                 }}
             });
 
@@ -50,8 +51,18 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             }
         }
 
-        changeHandler() {
-            console.log("x");
+        changeHandler(e) {
+            const field = e.target;
+            this.updateField(field.name, { value: field.value }, () => {
+                this.validateField(field.name)
+            });
+        }
+
+        updateField(fieldName, data, callback) {
+            const currentField = { ...this.state.fields[fieldName], ...data };
+            const updatedFields = { ...this.state.fields, [fieldName]: currentField };
+
+            this.setState({ fields: updatedFields }, callback);
         }
 
         getFormData(form) {
@@ -65,6 +76,32 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             }
 
             return fields;
+        }
+
+        validateField(fieldName) {
+            let valid = false;
+            let errors = [];
+            let value = this.state.fields[fieldName].value;
+
+            const field = this.state.fields[fieldName];
+
+            if (field) {
+                valid = new RegExp(field.rules[0].rule).test(value);
+                if (!valid) errors.push(field.rules[0].message);
+            }
+
+            this.updateField(fieldName, { value, valid, errors }, () => {
+                this.validateForm()
+            })
+        }
+
+        validateForm() {
+            const valid = _.filter(this.state.fields, { valid: false });
+            this.setState({
+                formValid: valid.length ? false : true
+            }, () => {
+                console.log(this.state)
+            });
         }
     }
 };

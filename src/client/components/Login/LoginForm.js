@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FormGroup, Input, Button } from "reactstrap";
-const _ = require("lodash");
 import FromWrapper from "../Form/Form";
 
 class LoginForm extends Component {
@@ -9,7 +8,6 @@ class LoginForm extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
                 <FormGroup>
@@ -40,6 +38,17 @@ const submitAction = (data) => {
 
 export default FromWrapper(
     LoginForm,
-    ["login", "password"],
+    [{
+        name: "login",
+        rules: [
+            {rule: /[0-9a-zA-Z]{6,}$/i, message: "Incorrect login"}
+        ]
+    },
+    {
+        name: "password",
+        rules: [
+            {rule: /[0-9a-zA-Z]{6,}$/i, message: "Incorrect password"}
+        ]
+    }],
     submitAction
 );
