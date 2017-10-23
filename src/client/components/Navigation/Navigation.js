@@ -11,6 +11,9 @@ const Navigation = () => {
             <NavItem>
                 <NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>
             </NavItem>
+            <NavItem>
+                <NavLink to="/login" activeClassName="active" className="nav-link">Login</NavLink>
+            </NavItem>
         </Nav>
     )
 };

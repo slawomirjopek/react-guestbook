@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import GuestBookPage from "../Pages/GuestBookPage";
 import ContactPage from "../Pages/ContactPage";
 import NoRoutePage from "../Pages/NoRoutePage";
+import LoginPage from "../Pages/LoginPage";
 import { Container } from "reactstrap";
 
 const Template = () => {
@@ -15,6 +16,7 @@ const Template = () => {
                 <Switch>
                     <Route path="/" component={GuestBookPage} exact/>
                     <Route path="/contact" component={ContactPage}/>
+                    <Route path="/login" component={LoginPage} />
                     <Route component={NoRoutePage}/>
                 </Switch>
             </Container>
