@@ -9,7 +9,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
 
             this.state = {
                 fields: this.mapFieldsToState(),
-                formValid: true
+                formValid: false
             };
         }
 
@@ -47,7 +47,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             const data = this.getFormData(e.target);
 
             if (this.state.formValid) {
-                submitAction(data)
+                submitAction(data, this.props)
             }
         }
 
@@ -98,9 +98,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
         validateForm() {
             const valid = _.filter(this.state.fields, { valid: false });
             this.setState({
-                formValid: valid.length ? false : true
-            }, () => {
-                console.log(this.state)
+                formValid: Boolean(!valid.length)
             });
         }
     }

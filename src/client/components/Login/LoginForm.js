@@ -32,8 +32,8 @@ class LoginForm extends Component {
     }
 }
 
-const submitAction = (data) => {
-    console.log("submitAction test!: ", data);
+const submitAction = (data, props) => {
+    // @TODO auth
 };
 
 export default FromWrapper(
