@@ -23,13 +23,13 @@ class GuestBookForm extends Component {
                 </FormGroup>
                 <FormGroup>
                     <InputValidator
-                        input={<Input name="title" type="text" placeholder="Login"/>}
+                        input={<Input name="title" type="text" placeholder="Title"/>}
                         inputState={this.props.formState.fields.title}
                     />
                 </FormGroup>
                 <FormGroup>
                     <InputValidator
-                        input={<Input name="content" type="text" placeholder="Login"/>}
+                        input={<Input name="content" type="textarea" placeholder="Message"/>}
                         inputState={this.props.formState.fields.content}
                     />
                 </FormGroup>
