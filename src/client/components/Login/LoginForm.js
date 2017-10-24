@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, Input, Button } from "reactstrap";
-import FromWrapper from "../Form/Form";
+import FormWrapper from "../Form/Form";
+import Validate from "../Form/Validate";
 
 class LoginForm extends Component {
     constructor() {
@@ -11,22 +12,33 @@ class LoginForm extends Component {
         return (
             <div>
                 <FormGroup>
-                    <Input
-                        name="login"
-                        type="text"
-                        placeholder="Login"
-                        value={this.props.formState.fields.name}
-                    />
+                    <Validate
+                        valid={this.props.formState.fields.login.valid}
+                        pristine={this.props.formState.fields.login.pristine}
+                    >
+                        <Input
+                            name="login"
+                            type="text"
+                            placeholder="Login"
+                        />
+                    </Validate>
                 </FormGroup>
                 <FormGroup>
-                    <Input
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        value={this.props.formState.fields.title}
-                    />
+                    <Validate
+                        valid={this.props.formState.fields.password.valid}
+                        pristine={this.props.formState.fields.password.pristine}
+                    >
+                        <Input
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Validate>
                 </FormGroup>
-                <Button type="submit" disabled={!this.props.formState.formValid}>Log in</Button>
+                <Button
+                    type="submit"
+                    disabled={!this.props.formState.formValid}
+                >Log in</Button>
             </div>
         )
     }
@@ -36,18 +48,18 @@ const submitAction = (data, props) => {
     // @TODO auth
 };
 
-export default FromWrapper(
+export default FormWrapper(
     LoginForm,
     [{
         name: "login",
         rules: [
-            {rule: /[0-9a-zA-Z]{6,}$/i, message: "Incorrect login"}
+            {rule: /[0-9a-zA-Z]{6,30}$/i, message: "length min:6, max:30 chars: a-Z & numbers"}
         ]
     },
     {
         name: "password",
         rules: [
-            {rule: /[0-9a-zA-Z]{6,}$/i, message: "Incorrect password"}
+            {rule: /[0-9a-zA-Z]{6,30}$/i, message: "length min:6, max:30 chars: a-Z & numbers"}
         ]
     }],
     submitAction

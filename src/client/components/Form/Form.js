@@ -35,7 +35,8 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
                     value: "",
                     valid: false,
                     errors: [],
-                    rules: field.rules
+                    rules: field.rules,
+                    pristine: true
                 }}
             });
 
@@ -54,7 +55,9 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
         changeHandler(e) {
             const field = e.target;
             this.updateField(field.name, { value: field.value }, () => {
-                this.validateField(field.name)
+                this.unmarkAsPristine(field.name, () => {
+                    this.validateField(field.name)
+                });
             });
         }
 
@@ -100,6 +103,10 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             this.setState({
                 formValid: Boolean(!valid.length)
             });
+        }
+
+        unmarkAsPristine(fieldName, callback) {
+            this.updateField(fieldName, { pristine: false }, callback)
         }
     }
 };
