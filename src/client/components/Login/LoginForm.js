@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, Input, Button } from "reactstrap";
 import FormWrapper from "../Form/Form";
-import Validate from "../Form/Validate";
+import InputValidator from "../Form/InputValidator";
 
 class LoginForm extends Component {
     constructor() {
@@ -12,28 +12,16 @@ class LoginForm extends Component {
         return (
             <div>
                 <FormGroup>
-                    <Validate
-                        valid={this.props.formState.fields.login.valid}
-                        pristine={this.props.formState.fields.login.pristine}
-                    >
-                        <Input
-                            name="login"
-                            type="text"
-                            placeholder="Login"
-                        />
-                    </Validate>
+                    <InputValidator
+                        input={<Input name="login" type="text" placeholder="Login"/>}
+                        inputState={this.props.formState.fields.login}
+                    />
                 </FormGroup>
                 <FormGroup>
-                    <Validate
-                        valid={this.props.formState.fields.password.valid}
-                        pristine={this.props.formState.fields.password.pristine}
-                    >
-                        <Input
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                        />
-                    </Validate>
+                    <InputValidator
+                        input={<Input name="password" type="password" placeholder="Password"/>}
+                        inputState={this.props.formState.fields.password}
+                    />
                 </FormGroup>
                 <Button
                     type="submit"

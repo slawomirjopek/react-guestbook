@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { entryAdd } from "../../effects/guestbook";
 import { FormGroup, Input, Button } from "reactstrap";
 import FormWrapper from "../Form/Form";
-import Validate from "../Form/Validate";
+import InputValidator from "../Form/InputValidator";
 const _ = require("lodash");
 
 class GuestBookForm extends Component {
@@ -16,40 +16,22 @@ class GuestBookForm extends Component {
             <div>
                 <h2 className="h4 mb-3">Leave a messsage</h2>
                 <FormGroup>
-                    <Validate
-                        valid={this.props.formState.fields.name.valid}
-                        pristine={this.props.formState.fields.name.pristine}
-                    >
-                        <Input
-                            name="name"
-                            type="text"
-                            placeholder="Your name"
-                        />
-                    </Validate>
+                    <InputValidator
+                        input={<Input name="name" type="text" placeholder="Login"/>}
+                        inputState={this.props.formState.fields.name}
+                    />
                 </FormGroup>
                 <FormGroup>
-                    <Validate
-                        valid={this.props.formState.fields.title.valid}
-                        pristine={this.props.formState.fields.title.pristine}
-                    >
-                        <Input
-                            name="title"
-                            type="text"
-                            placeholder="Title"
-                        />
-                    </Validate>
+                    <InputValidator
+                        input={<Input name="title" type="text" placeholder="Login"/>}
+                        inputState={this.props.formState.fields.title}
+                    />
                 </FormGroup>
                 <FormGroup>
-                    <Validate
-                        valid={this.props.formState.fields.content.valid}
-                        pristine={this.props.formState.fields.content.pristine}
-                    >
-                        <Input
-                            type="textarea"
-                            name="content"
-                            placeholder="Message"
-                        />
-                    </Validate>
+                    <InputValidator
+                        input={<Input name="content" type="text" placeholder="Login"/>}
+                        inputState={this.props.formState.fields.content}
+                    />
                 </FormGroup>
                 <Button type="submit" disabled={!this.props.formState.formValid}>Add entry</Button>
             </div>

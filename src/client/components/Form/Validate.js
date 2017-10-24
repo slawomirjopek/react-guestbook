@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 class Validate extends Component {
     modifyChild(child) {
-        let inputProps = {};
+        let inputProps = {
+            autoComplete: "off"
+        };
         let containerProps = {};
 
         if (!this.props.valid && !this.props.pristine) {
@@ -12,7 +14,7 @@ class Validate extends Component {
 
         const input = React.cloneElement(child, inputProps);
         const container = React.createElement("div", {
-            className: "has-warning"
+            className: "validate"
         }, input);
 
         return container;
