@@ -16,11 +16,12 @@ class InputValidator extends Component {
         }
 
         const input = React.cloneElement(this.props.input, inputProps);
+        const errors = Boolean(this.props.inputState.errors.length);
 
         return (
             <div className="validator-field">
                 {input}
-                <InputMessage messages={this.props.inputState.errors}/>
+                {errors && <InputMessage messages={this.props.inputState.errors}/>}
             </div>
         )
     }
