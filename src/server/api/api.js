@@ -9,11 +9,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const posts = require("./models/post");
 const users = require("./models/user");
+const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 
 const app = new express();
 app.use(cors());
 app.use(bodyParser.json());
+app.set("jwtSecret", "3jF234F4sa$(6fsds!");
 
 const api = config("api").name;
 const db = config("database");
@@ -21,11 +23,69 @@ const server = config("server").api;
 
 mongoose.connect(`${db.host}:${db.port}/${db.name}`);
 
-// LOGIN
+// verify token middleware
+const apiRoutes = express.Router();
+apiRoutes.use((req, res, next) => {
+    const token = req.body.token;
+
+    // if no token
+    if (!token) {
+        // status 403 - forbidden
+        return res.status(403).json({
+            message: "No token provided.",
+            authenticated: false
+        })
+    }
+
+    // verify token & expiration
+    jwt.verify(token, app.get("jwtSecret"), (err, decoded) => {
+        if (err) {
+            return res.json({
+                message: "Bad token.",
+                authenticated: false
+            })
+        }
+
+        // save request for use in next routes
+        req.decoded = decoded;
+        next();
+    });
+});
+
+// @TODO add delete route to use token check middleware
+// routes with token auth
+
+// authenticate
 app.post(getRoute(api.authenticate), (req, res) => {
-    users.findOne({ login: req.body.login }, (err, data) => {
+    users.findOne({ login: req.body.login }, (err, user) => {
         if (err) throw err;
-        res.json(data);
+
+        // if user not found
+        if (!user) {
+            return res.json({
+                message: "User authentication failed (user nor found).",
+                authenticated: false
+            })
+        }
+
+        // check password
+        if (user.password !== req.body.password) {
+            return res.json({
+                message: "User authentication failed (wrong password).",
+                authenticated: false
+            })
+        }
+
+        // user & password match then create jwt token
+        const payload = { login: user.login };
+        const settings = { expiresIn : 1440 };
+        const token = jwt.sign(payload, app.get("jwtSecret"), settings);
+
+        res.json({
+            message: "Successfully logged in.",
+            authenticated: true,
+            token: token
+        });
     })
 });
 
