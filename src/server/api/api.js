@@ -8,6 +8,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const posts = require("./models/post");
+const users = require("./models/user");
 const _ = require("lodash");
 
 const app = new express();
@@ -19,6 +20,14 @@ const db = config("database");
 const server = config("server").api;
 
 mongoose.connect(`${db.host}:${db.port}/${db.name}`);
+
+// LOGIN
+app.post(getRoute(api.authenticate), (req, res) => {
+    users.findOne({ login: req.body.login }, (err, data) => {
+        if (err) throw err;
+        res.json(data);
+    })
+});
 
 /**
  * @api {get} /guestbook/ 1. Get entries
@@ -33,7 +42,7 @@ mongoose.connect(`${db.host}:${db.port}/${db.name}`);
  * @apiSuccess {String[]} entries.category Entry categories
  */
 app.get(getRoute(api.guestbook), (req, res) => {
-    posts.find(responseHandler.bind(res));
+    posts.find(guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -51,7 +60,7 @@ app.get(getRoute(api.guestbook), (req, res) => {
  */
 app.get(getRoute(api.guestbook, "/:id"), (req, res) => {
     const query = {_id: req.params.id};
-    posts.find(query, responseHandler.bind(res));
+    posts.find(query, guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -74,7 +83,7 @@ app.get(getRoute(api.guestbook, "/:id"), (req, res) => {
  */
 app.post(getRoute(api.guestbook), (req, res) => {
     const entry = req.body;
-    posts.create(entry, responseHandler.bind(res));
+    posts.create(entry, guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -93,7 +102,7 @@ app.post(getRoute(api.guestbook), (req, res) => {
 app.post(getRoute(api.guestbook, "/category/"), (req, res) => {
     const categories = {category: req.body.category};
     // @TODO find by categories
-    //posts.find(categories, responseHandler.bind(res));
+    //posts.find(categories, guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -112,7 +121,7 @@ app.post(getRoute(api.guestbook, "/category/"), (req, res) => {
 app.post(getRoute(api.guestbook, "/tag/"), (req, res) => {
     const tags = {tag: req.body.tag};
     // @TODO find by tags
-    //posts.find(tags, responseHandler.bind(res));
+    //posts.find(tags, guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -143,7 +152,7 @@ app.get(getRoute(api.guestbook, "/archive/:month"), (req, res) => {
  */
 app.delete(getRoute(api.guestbook, "/:id"), (req, res) => {
     const query = {_id: req.params.id};
-    posts.remove(query, responseHandler.bind(res));
+    posts.remove(query, guestbookResponseHandler.bind(res));
 });
 
 /**
@@ -173,7 +182,7 @@ app.listen(server.port, () => {
     console.log(`API server running on ${server.port} port.`);
 });
 
-function responseHandler(err, data) {
+function guestbookResponseHandler(err, data) {
     if (err) throw err;
     this.json(data);
 }

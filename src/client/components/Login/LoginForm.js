@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { FormGroup, Input, Button } from "reactstrap";
+import { connect } from "react-redux";
 import FormWrapper from "../Form/Form";
 import InputValidator from "../Form/InputValidator";
+import requestLogin from "../../effects/login";
 
 class LoginForm extends Component {
     constructor() {
@@ -33,10 +35,18 @@ class LoginForm extends Component {
 }
 
 const submitAction = (data, props) => {
-    // @TODO auth
+    props.requestLogin({ ...data });
 };
 
-export default FormWrapper(
+const mapDispatchToProps = (dispatch) => {
+    return {
+        requestLogin: (credentials) => {
+            dispatch(requestLogin(credentials))
+        }
+    }
+};
+
+const wrapped = FormWrapper(
     LoginForm,
     [{
         name: "login",
@@ -52,3 +62,5 @@ export default FormWrapper(
     }],
     submitAction
 );
+
+export default connect(null, mapDispatchToProps)(wrapped);

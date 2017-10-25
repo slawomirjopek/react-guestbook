@@ -17,7 +17,8 @@ var defaults = {
     },
     api: {
         name: {
-            guestbook: "guestbook"
+            guestbook: "guestbook",
+            authenticate: "authenticate"
         },
         prefix: "/api"
     }
