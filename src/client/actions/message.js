@@ -3,14 +3,14 @@ import TYPES from "../types/message";
 export default {
     publishMessage: (message) => {
         return {
-            type: TYPES.PUBLISH,
+            type: TYPES.ACTIONS.PUBLISH,
             payload: message
         }
     },
 
     removeFirstMessage: () => {
         return {
-            type: TYPES.REMOVE_FIRST
+            type: TYPES.ACTIONS.REMOVE_FIRST
         }
     }
 }

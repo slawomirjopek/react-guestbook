@@ -1,26 +1,40 @@
 import axios from "axios";
-import actions from "../actions/login";
+import loginActions from "../actions/login";
+import messageActions from "../actions/message";
+import TYPES from "../types/message";
 import config from "../../../config/config";
 
 const api = config.getConfig("api");
 
 const requestLogin = (credentials) => (dispatch) => {
-    dispatch(actions.requestLogin());
+    dispatch(loginActions.requestLogin());
+
     return axios.post(
         `${api.prefix}/${api.name.authenticate}`,
         credentials
     ).then((response) => {
         const data = response.data;
+
         if (!response.data.authenticated) {
-            return dispatch(actions.requestFailed(data.message));
+            dispatch(loginActions.requestFailed(data.message));
+            dispatchMessage(dispatch, data.message, TYPES.MESSAGE_TYPES.DANGER);
+            return;
         }
-        dispatch(actions.requestSuccess(data));
+
+        dispatch(loginActions.requestSuccess(data));
+        dispatchMessage(dispatch, data.message, TYPES.MESSAGE_TYPES.SUCCESS);
+
         // @TODO save login/token to localStorage
     }, (error) => {
-        dispatch(actions.requestFailed({
-            message: error
-        }));
+        dispatchMessage(dispatch, error, TYPES.MESSAGE_TYPES.DANGER);
     })
+};
+
+const dispatchMessage = (dispatcher, message, type) => {
+    dispatcher(messageActions.publishMessage({
+        message,
+        type
+    }));
 };
 
 export { requestLogin };

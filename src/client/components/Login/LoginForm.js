@@ -30,7 +30,6 @@ class LoginForm extends Component {
                     type="submit"
                     disabled={!this.props.formState.formValid}
                 >Log in</Button>
-                <a onClick={this.props.publishMessage}>publish test message</a>
             </div>
         )
     }
@@ -44,12 +43,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         requestLogin: (credentials) => {
             dispatch(requestLogin(credentials))
-        },
-        publishMessage: (message) => {
-            dispatch(messageActions.publishMessage({
-                message: "test",
-                type: "danger"
-            }))
         }
     }
 };
