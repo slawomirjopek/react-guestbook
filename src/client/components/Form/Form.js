@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form } from "reactstrap";
+import FormData from "formdata-polyfill";
 const _ = require("lodash");
 
 const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {

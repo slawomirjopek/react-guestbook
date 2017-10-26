@@ -23,7 +23,7 @@ var defaults = {
         prefix: "/api"
     },
     message: {
-        timeout: 2000
+        timeout: 3000
     }
 };
 
