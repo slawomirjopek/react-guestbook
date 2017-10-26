@@ -10,10 +10,17 @@ const requestLogin = (credentials) => (dispatch) => {
         `${api.prefix}/${api.name.authenticate}`,
         credentials
     ).then((response) => {
-        dispatch(actions.requestSuccess(response));
+        const data = response.data;
+        if (!response.data.authenticated) {
+            return dispatch(actions.requestFailed(data.message));
+        }
+        dispatch(actions.requestSuccess(data));
+        // @TODO save login/token to localStorage
     }, (error) => {
-        dispatch(actions.requestFailed(error));
+        dispatch(actions.requestFailed({
+            message: error
+        }));
     })
 };
 
-export default requestLogin;
+export { requestLogin };

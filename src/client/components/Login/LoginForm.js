@@ -3,7 +3,7 @@ import { FormGroup, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
 import FormWrapper from "../Form/Form";
 import InputValidator from "../Form/InputValidator";
-import requestLogin from "../../effects/login";
+import { requestLogin } from "../../effects/login";
 
 class LoginForm extends Component {
     constructor() {

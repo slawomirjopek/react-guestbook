@@ -1,10 +1,9 @@
 import TYPES from "../types/login";
 
 const actions = {
-    requestLogin: (credentials) => {
+    requestLogin: () => {
         return {
-            type: TYPES.REQUEST,
-            payload: credentials
+            type: TYPES.REQUEST
         }
     },
 
