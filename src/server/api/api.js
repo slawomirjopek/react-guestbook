@@ -81,7 +81,8 @@ app.post(getRoute(api.authenticate), (req, res) => {
         res.json({
             message: "Successfully logged in.",
             authenticated: true,
-            token: token
+            token: token,
+            user: _.pick(user, ["_id", "login"])
         });
     })
 });
@@ -99,7 +100,6 @@ app.post(getRoute(api.authenticate), (req, res) => {
  * @apiSuccess {String[]} entries.category Entry categories
  */
 app.get(getRoute(api.guestbook), (req, res) => {
-    console.log("get");
     posts.find(guestbookResponseHandler.bind(res));
 });
 

@@ -15,7 +15,7 @@ class LoginPage extends Component {
                 <Col xs="12" sm="10" md="8" lg="6" >
                     <h2>Admin login</h2>
                     {this.props.authenticated ?
-                        <p>Welcome!</p>
+                        <p>Welcome {this.props.user.login}!</p>
                         :
                         <LoginForm/>
                     }

@@ -7,10 +7,11 @@ import ContactPage from "../Pages/ContactPage";
 import NoRoutePage from "../Pages/NoRoutePage";
 import LoginPage from "../Pages/LoginPage";
 import { Container } from "reactstrap";
+import "./template.scss";
 
 const Template = () => {
     return (
-        <div className="bg-light">
+        <div className="wrapper bg-light">
             <Header/>
             <Container className="py-4">
                 <Switch>
