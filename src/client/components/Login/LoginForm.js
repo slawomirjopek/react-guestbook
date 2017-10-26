@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import FormWrapper from "../Form/Form";
 import InputValidator from "../Form/InputValidator";
 import { requestLogin } from "../../effects/login";
-import messageActions from "../../actions/message";
 
 class LoginForm extends Component {
     constructor() {
