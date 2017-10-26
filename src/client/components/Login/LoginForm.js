@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import FormWrapper from "../Form/Form";
 import InputValidator from "../Form/InputValidator";
 import { requestLogin } from "../../effects/login";
+import messageActions from "../../actions/message";
 
 class LoginForm extends Component {
     constructor() {
@@ -29,6 +30,7 @@ class LoginForm extends Component {
                     type="submit"
                     disabled={!this.props.formState.formValid}
                 >Log in</Button>
+                <a onClick={this.props.publishMessage}>publish test message</a>
             </div>
         )
     }
@@ -42,6 +44,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         requestLogin: (credentials) => {
             dispatch(requestLogin(credentials))
+        },
+        publishMessage: (message) => {
+            dispatch(messageActions.publishMessage({
+                message: "test",
+                type: "danger"
+            }))
         }
     }
 };

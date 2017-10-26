@@ -1,0 +1,4 @@
+export default {
+    PUBLISH: "PUBLISH_MESSAGE",
+    REMOVE_FIRST: "REMOVE_FIRST_MESSAGE"
+}

@@ -6,6 +6,7 @@ import GuestBookPage from "../Pages/GuestBookPage";
 import ContactPage from "../Pages/ContactPage";
 import NoRoutePage from "../Pages/NoRoutePage";
 import LoginPage from "../Pages/LoginPage";
+import Message from "../Message/Message";
 import { Container } from "reactstrap";
 import "./template.scss";
 
@@ -14,6 +15,7 @@ const Template = () => {
         <div className="wrapper bg-light">
             <Header/>
             <Container className="py-4">
+                <Message/>
                 <Switch>
                     <Route path="/" component={GuestBookPage} exact/>
                     <Route path="/contact" component={ContactPage}/>

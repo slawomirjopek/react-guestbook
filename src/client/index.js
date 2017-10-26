@@ -11,10 +11,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 // reducers
 import guestbook from "./reducers/guestbook";
 import login from "./reducers/login";
+import message from "./reducers/message";
 
 const reducers = {
     guestbook,
-    login
+    login,
+    message
 };
 
 const store = createStore(combineReducers(reducers), applyMiddleware(logger, thunk));

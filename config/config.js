@@ -21,6 +21,9 @@ var defaults = {
             authenticate: "authenticate"
         },
         prefix: "/api"
+    },
+    message: {
+        timeout: 2000
     }
 };
 

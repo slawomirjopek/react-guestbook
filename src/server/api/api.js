@@ -209,7 +209,6 @@ app.get(getRoute(api.guestbook, "archive/:month"), (req, res) => {
  * @apiSuccess {Number} response.ok 0/1
  */
 app.delete(getRoute(api.guestbook, ":id"), apiRoutes, (req, res) => {
-    console.log("del");
     const query = {_id: req.params.id};
     posts.remove(query, guestbookResponseHandler.bind(res));
 });
