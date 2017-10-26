@@ -52,9 +52,6 @@ apiRoutes.use((req, res, next) => {
     });
 });
 
-// @TODO add delete route to use token check middleware
-// routes with token auth
-
 // authenticate
 app.post(getRoute(api.authenticate), (req, res) => {
     users.findOne({ login: req.body.login }, (err, user) => {
@@ -102,6 +99,7 @@ app.post(getRoute(api.authenticate), (req, res) => {
  * @apiSuccess {String[]} entries.category Entry categories
  */
 app.get(getRoute(api.guestbook), (req, res) => {
+    console.log("get");
     posts.find(guestbookResponseHandler.bind(res));
 });
 
@@ -118,7 +116,7 @@ app.get(getRoute(api.guestbook), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(getRoute(api.guestbook, "/:id"), (req, res) => {
+app.get(getRoute(api.guestbook, ":id"), (req, res) => {
     const query = {_id: req.params.id};
     posts.find(query, guestbookResponseHandler.bind(res));
 });
@@ -159,7 +157,7 @@ app.post(getRoute(api.guestbook), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.post(getRoute(api.guestbook, "/category/"), (req, res) => {
+app.post(getRoute(api.guestbook, "category/"), (req, res) => {
     const categories = {category: req.body.category};
     // @TODO find by categories
     //posts.find(categories, guestbookResponseHandler.bind(res));
@@ -178,7 +176,7 @@ app.post(getRoute(api.guestbook, "/category/"), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.post(getRoute(api.guestbook, "/tag/"), (req, res) => {
+app.post(getRoute(api.guestbook, "tag/"), (req, res) => {
     const tags = {tag: req.body.tag};
     // @TODO find by tags
     //posts.find(tags, guestbookResponseHandler.bind(res));
@@ -197,7 +195,7 @@ app.post(getRoute(api.guestbook, "/tag/"), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(getRoute(api.guestbook, "/archive/:month"), (req, res) => {
+app.get(getRoute(api.guestbook, "archive/:month"), (req, res) => {
     // @TODO get all entries from selected month
 });
 
@@ -210,7 +208,8 @@ app.get(getRoute(api.guestbook, "/archive/:month"), (req, res) => {
  * @apiSuccess {Number} response.n 0/1
  * @apiSuccess {Number} response.ok 0/1
  */
-app.delete(getRoute(api.guestbook, "/:id"), (req, res) => {
+app.delete(getRoute(api.guestbook, ":id"), apiRoutes, (req, res) => {
+    console.log("del");
     const query = {_id: req.params.id};
     posts.remove(query, guestbookResponseHandler.bind(res));
 });
@@ -234,7 +233,7 @@ app.delete(getRoute(api.guestbook, "/:id"), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.put(getRoute(api.guestbook, "/:id"), (req, res) => {
+app.put(getRoute(api.guestbook, ":id"), (req, res) => {
     // @TODO edit entry
 });
 
