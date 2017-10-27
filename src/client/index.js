@@ -1,25 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import logger from "redux-logger";
-import thunk from "redux-thunk";
+import { store } from "./store/store";
+import loginActions from "./actions/login";
 import Template from "./components/Template/Template";
 import 'bootstrap/dist/css/bootstrap.css';
 
-// reducers
-import guestbook from "./reducers/guestbook";
-import login from "./reducers/login";
-import message from "./reducers/message";
-
-const reducers = {
-    guestbook,
-    login,
-    message
-};
-
-const store = createStore(combineReducers(reducers), applyMiddleware(logger, thunk));
+// check data from sessionStorage
+const token = sessionStorage.getItem("token");
+if (token) {
+    const data = {
+        authenticated: true,
+        token,
+        user: {
+            _id: sessionStorage.getItem("user_id"),
+            login: sessionStorage.getItem("login")
+        }
+    };
+    store.dispatch(loginActions.requestSuccess(data))
+}
 
 ReactDOM.render(
     <Provider store={store}>

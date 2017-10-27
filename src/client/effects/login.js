@@ -30,7 +30,9 @@ const requestLogin = (credentials) => (dispatch) => {
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
 
-        // @TODO save login/token to localStorage
+        sessionStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("_id", response.data.user._id);
+        sessionStorage.setItem("login", response.data.user.login);
     }, (error) => {
         dispatch(messageActions.publishMessage({
             message: error,
