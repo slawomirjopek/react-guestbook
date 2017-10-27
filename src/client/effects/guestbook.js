@@ -1,19 +1,19 @@
 import axios from "axios";
-import actions from "../actions/guestbook";
 import config from "../../../config/config";
-import { publishMessage } from "../effects/message";
 import TYPES from "../types/message";
+import guestbookActions from "../actions/guestbook";
+import messageActions from "../actions/message";
 
 const api = config.getConfig("api");
 
 const fetchEntries = () => (dispatch) => {
-    dispatch(actions.getEntries());
+    dispatch(guestbookActions.getEntries());
 
     return axios.get(`${api.prefix}/${api.name.guestbook}`).then((response) => {
-        dispatch(actions.entriesReceived(response));
+        dispatch(guestbookActions.entriesReceived(response));
     }, (error) => {
-        dispatch(actions.entriesFailed(error));
-        dispatch(publishMessage({
+        dispatch(guestbookActions.entriesFailed(error));
+        dispatch(messageActions.publishMessage({
             message: error,
             type: TYPES.MESSAGE_TYPES.DANGER
         }));
@@ -21,20 +21,20 @@ const fetchEntries = () => (dispatch) => {
 };
 
 const entryAdd = (entry) => (dispatch) => {
-    dispatch(actions.getEntries());
+    dispatch(guestbookActions.getEntries());
 
     return axios.post(
         `${api.prefix}/${api.name.guestbook}`,
         entry
     ).then((response) => {
-        dispatch(actions.entryUpdated(response.data));
-        dispatch(publishMessage({
+        dispatch(guestbookActions.entryUpdated(response.data));
+        dispatch(messageActions.publishMessage({
             message: `Entry "${response.data.title}" added :)`,
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
     }, (error) => {
-        dispatch(actions.entriesFailed(error));
-        dispatch(publishMessage({
+        dispatch(guestbookActions.entriesFailed(error));
+        dispatch(messageActions.publishMessage({
             message: error,
             type: TYPES.MESSAGE_TYPES.DANGER
         }));

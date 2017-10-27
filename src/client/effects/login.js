@@ -1,8 +1,8 @@
 import axios from "axios";
-import loginActions from "../actions/login";
-import { publishMessage } from "../effects/message";
-import TYPES from "../types/message";
 import config from "../../../config/config";
+import TYPES from "../types/message";
+import loginActions from "../actions/login";
+import messageActions from "../actions/message";
 
 const api = config.getConfig("api");
 
@@ -17,7 +17,7 @@ const requestLogin = (credentials) => (dispatch) => {
 
         if (!response.data.authenticated) {
             dispatch(loginActions.requestFailed(data.message));
-            dispatch(publishMessage({
+            dispatch(messageActions.publishMessage({
                 message: data.message,
                 type: TYPES.MESSAGE_TYPES.DANGER
             }));
@@ -25,14 +25,14 @@ const requestLogin = (credentials) => (dispatch) => {
         }
 
         dispatch(loginActions.requestSuccess(data));
-        dispatch(publishMessage({
+        dispatch(messageActions.publishMessage({
             message: data.message,
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
 
         // @TODO save login/token to localStorage
     }, (error) => {
-        dispatch(publishMessage({
+        dispatch(messageActions.publishMessage({
             message: error,
             type: TYPES.MESSAGE_TYPES.DANGER
         }))
