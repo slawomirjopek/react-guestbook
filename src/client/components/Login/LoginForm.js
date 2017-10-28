@@ -36,7 +36,7 @@ class LoginForm extends Component {
 
 const submitAction = (data, props) => {
     props.requestLogin({ ...data });
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(requestLogin(credentials))
         }
     }
-}
+};
 
 const wrapped = FormWrapper(
     LoginForm,
@@ -61,6 +61,6 @@ const wrapped = FormWrapper(
         ]
     }],
     submitAction
-)
+);
 
 export default connect(null, mapDispatchToProps)(wrapped);
