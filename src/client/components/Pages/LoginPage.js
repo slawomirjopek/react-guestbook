@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import LoginForm from "../../components/Login/LoginForm";
+import { logout } from "../../effects/login";
 
 class LoginPage extends Component {
     constructor(props) {
@@ -15,7 +16,11 @@ class LoginPage extends Component {
                 <Col xs="12" sm="10" md="8" lg="6" >
                     <h2>Admin login</h2>
                     {this.props.authenticated ?
-                        <p>Welcome {this.props.user.login}!</p>
+                        <div>
+                            <p>Welcome {this.props.user.login}!</p>
+                            <hr/>
+                            <Button onClick={this.props.logout}>Logout</Button>
+                        </div>
                         :
                         <LoginForm/>
                     }
@@ -27,6 +32,16 @@ class LoginPage extends Component {
 
 const mapStateToProps = (state) => {
     return { ...state.login }
-};
+}
 
-export default connect(mapStateToProps)(LoginPage)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logout: () => {
+            dispatch(logout())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+
+

@@ -6,7 +6,7 @@ const init = {
     authenticated: false,
     token: null,
     loading: false
-};
+}
 
 const reducer = (state = init, action) => {
     switch (action.type) {
@@ -33,9 +33,14 @@ const reducer = (state = init, action) => {
                 loading: false
             };
             break;
+        case TYPES.LOGOUT:
+            state = {
+                ...state,
+                ...init
+            }
     }
 
     return state;
-};
+}
 
 export default reducer;

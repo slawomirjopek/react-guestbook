@@ -14,7 +14,7 @@ if (token) {
         authenticated: true,
         token,
         user: {
-            _id: sessionStorage.getItem("user_id"),
+            _id: sessionStorage.getItem("_id"),
             login: sessionStorage.getItem("login")
         }
     };

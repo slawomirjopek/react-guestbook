@@ -19,6 +19,12 @@ const actions = {
             type: TYPES.REQUEST_FAILED,
             payload: error
         }
+    },
+
+    logout: () => {
+        return {
+            type: TYPES.LOGOUT
+        }
     }
 };
 

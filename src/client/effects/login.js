@@ -3,6 +3,7 @@ import config from "../../../config/config";
 import TYPES from "../types/message";
 import loginActions from "../actions/login";
 import messageActions from "../actions/message";
+import storage from "../services/storage";
 
 const api = config.getConfig("api");
 
@@ -30,15 +31,26 @@ const requestLogin = (credentials) => (dispatch) => {
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
 
-        sessionStorage.setItem("token", response.data.token);
-        sessionStorage.setItem("_id", response.data.user._id);
-        sessionStorage.setItem("login", response.data.user.login);
+        storage.set({
+            token: response.data.token,
+            _id: response.data.user._id,
+            login: response.data.user.login
+        });
     }, (error) => {
         dispatch(messageActions.publishMessage({
             message: error,
             type: TYPES.MESSAGE_TYPES.DANGER
         }))
     })
-};
+}
 
-export { requestLogin };
+const logout = () => (dispatch) => {
+    dispatch(loginActions.logout());
+    storage.clear();
+    dispatch(messageActions.publishMessage({
+        message: "You have been logged out.",
+        type: TYPES.MESSAGE_TYPES.SUCCESS
+    }));
+}
+
+export { requestLogin, logout };
