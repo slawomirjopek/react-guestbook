@@ -9,6 +9,7 @@
     "bootstrap": "^4.0.0-beta",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "font-awesome": "^4.7.0",
     "formdata-polyfill": "^2.0.4",
     "http-proxy": "^1.16.2",
     "jsonwebtoken": "^8.1.0",

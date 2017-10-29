@@ -6,11 +6,6 @@ import GuestbookAdminList from "../../components/Guestbook/GuestbookAdminList";
 import { logout } from "../../effects/login";
 
 class LoginPage extends Component {
-    constructor(props) {
-        super(props);
-        // @TODO check if localStorage has {user and token} then make this.props.authenticated true
-    }
-
     render() {
         let colParams;
         if (!this.props.authenticated) {

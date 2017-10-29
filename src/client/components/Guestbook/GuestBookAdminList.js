@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { connect } from "react-redux";
 import { fetchEntries } from "../../effects/guestbook";
 import { Table } from 'reactstrap';
+import Icon from "../Icon/Icon";
 
 class GuestbookAdminList extends Component {
     componentDidMount() {
@@ -40,9 +41,19 @@ class GuestbookAdminList extends Component {
                 <td>{entry.title}</td>
                 <td>{entry.author}</td>
                 <td>{entry.date}</td>
-                <td>remove | edit</td>
+                <td>
+                    <Icon
+                        onClick={this.deleteEntry}
+                        icon="fa-times"
+                        aria={true}
+                    />
+                </td>
             </tr>
         ));
+    }
+
+    deleteEntry() {
+        console.log("x");
     }
 }
 
