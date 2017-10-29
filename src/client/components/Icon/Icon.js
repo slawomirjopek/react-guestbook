@@ -8,7 +8,7 @@ class Icon extends React.Component {
         let icon = <i
             onClick={this.props.wrapper ? null : this.props.onClick}
             className={className}
-            aria-hidden={this.props.aria}
+            {...this.props}
         />
 
         if (this.props.wrapper) {
