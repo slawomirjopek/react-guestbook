@@ -48,6 +48,7 @@ const entryDelete = (entryId) => (dispatch, getState) => {
         `${api.prefix}/${api.name.guestbook}/${entryId}`
     ).then((response) => {
         // update entries
+        dispatch(guestbookActions.entryDeleted(response.data[0]));
         // @TODO response object not array!
         dispatch(messageActions.publishMessage({
             message: `Entry "${response.data[0].title}" deleted.`,

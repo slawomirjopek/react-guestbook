@@ -1,4 +1,5 @@
 import TYPES from "../types/guestbook";
+const _ = require("lodash");
 
 const init = {
     entries: [],
@@ -35,21 +36,24 @@ const reducer = (state = init, action) => {
                 ...state,
                 entries: state.entries.concat(action.payload),
                 loading: false
-            }
+            };
             break;
         case TYPES.DELETE:
             state = {
                 ...state,
                 loading: true
-            }
+            };
             break;
         case TYPES.DELETED:
-            const deletedEntry = action.payload;
-            //@TODO remove deleted entry from entries state
+            const entries = _.filter(
+                state.entries, (entry) => entry._id !== action.payload._id
+            );
+
             state = {
                 ...state,
+                entries,
                 loading: false
-            }
+            };
             break;
     }
     return state;
