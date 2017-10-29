@@ -26,6 +26,19 @@ const actions = {
             type: TYPES.ENTRY_UPDATED,
             payload: entry
         }
+    },
+
+    entryDelete: () => {
+        return {
+            type: TYPES.DELETE
+        }
+    },
+
+    entryDeleted: (deletedEntry) => {
+        return {
+            type: TYPES.DELETED,
+            payload: deletedEntry
+        }
     }
 };
 

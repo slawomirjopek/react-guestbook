@@ -41,4 +41,24 @@ const entryAdd = (entry) => (dispatch) => {
     })
 };
 
-export { fetchEntries, entryAdd }
+const entryDelete = (entryId) => (dispatch, getState) => {
+    dispatch(guestbookActions.entryDelete());
+
+    return axios.delete(
+        `${api.prefix}/${api.name.guestbook}/${entryId}`
+    ).then((response) => {
+        // update entries
+        // @TODO response object not array!
+        dispatch(messageActions.publishMessage({
+            message: `Entry "${response.data[0].title}" deleted.`,
+            type: TYPES.MESSAGE_TYPES.SUCCESS
+        }));
+    }, (error) => {
+        dispatch(messageActions.publishMessage({
+            message: error.message,
+            type: TYPES.MESSAGE_TYPES.DANGER
+        }));
+    })
+}
+
+export { fetchEntries, entryAdd, entryDelete }

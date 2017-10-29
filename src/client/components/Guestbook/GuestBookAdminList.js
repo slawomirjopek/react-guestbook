@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
-import { fetchEntries } from "../../effects/guestbook";
+import { fetchEntries, entryDelete } from "../../effects/guestbook";
 import { Table } from 'reactstrap';
 import Icon from "../Icon/Icon";
 
@@ -43,7 +43,7 @@ class GuestbookAdminList extends Component {
                 <td>{entry.date}</td>
                 <td className="text-center">
                     <Icon
-                        onClick={this.deleteEntry}
+                        onClick={this.iconClickHandler.bind(this)}
                         icon="fa fa-times-circle"
                         aria-hidden={true}
                         data-id={entry._id}
@@ -53,8 +53,9 @@ class GuestbookAdminList extends Component {
         ));
     }
 
-    deleteEntry(e) {
+    iconClickHandler(e) {
         const entryId = e.target.dataset.id;
+        this.props.deleteEntry(entryId);
     }
 }
 
@@ -67,7 +68,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: () => dispatch(fetchEntries())
+        fetchData: () => dispatch(fetchEntries()),
+        deleteEntry: (entryId) => {
+            dispatch(entryDelete(entryId))
+        }
     }
 };
 

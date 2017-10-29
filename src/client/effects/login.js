@@ -16,6 +16,9 @@ const requestLogin = (credentials) => (dispatch) => {
     ).then((response) => {
         const data = response.data;
 
+        // set axios to send auth with every request
+        axios.defaults.headers.common['Authorization'] = data.token;
+
         if (!response.data.authenticated) {
             dispatch(loginActions.requestFailed(data.message));
             dispatch(messageActions.publishMessage({
@@ -47,6 +50,10 @@ const requestLogin = (credentials) => (dispatch) => {
 const logout = () => (dispatch) => {
     dispatch(loginActions.logout());
     storage.clear();
+
+    // delete axios auth header
+    delete axios.defaults.headers.common['Authorization'];
+
     dispatch(messageActions.publishMessage({
         message: "You have been logged out.",
         type: TYPES.MESSAGE_TYPES.SUCCESS

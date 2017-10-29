@@ -26,12 +26,12 @@ mongoose.connect(`${db.host}:${db.port}/${db.name}`);
 // verify token middleware
 const apiRoutes = express.Router();
 apiRoutes.use((req, res, next) => {
-    const token = req.body.token;
+    const token = req.body.token || req.headers.authorization;
 
     // if no token
     if (!token) {
         // status 403 - forbidden
-        return res.status(403).json({
+        return res.status(403).send({
             message: "No token provided.",
             authenticated: false
         })
@@ -40,7 +40,7 @@ apiRoutes.use((req, res, next) => {
     // verify token & expiration
     jwt.verify(token, app.get("jwtSecret"), (err, decoded) => {
         if (err) {
-            return res.json({
+            return res.status(403).json({
                 message: "Bad token.",
                 authenticated: false
             })
@@ -210,7 +210,12 @@ app.get(getRoute(api.guestbook, "archive/:month"), (req, res) => {
  */
 app.delete(getRoute(api.guestbook, ":id"), apiRoutes, (req, res) => {
     const query = {_id: req.params.id};
-    posts.remove(query, guestbookResponseHandler.bind(res));
+
+    posts.find(query, (err, data) => {
+        posts.remove(query, () => {
+            res.json(data)
+        })
+    });
 });
 
 /**
