@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchEntries } from "../../effects/guestbook";
 import { Table } from 'reactstrap';
 import Icon from "../Icon/Icon";
+import { Button } from 'reactstrap';
 
 class GuestbookAdminList extends Component {
     componentDidMount() {
@@ -21,7 +22,7 @@ class GuestbookAdminList extends Component {
                             <th>Title</th>
                             <th>Author</th>
                             <th>Date</th>
-                            <th>Actions</th>
+                            <th className="text-center">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,16 +37,19 @@ class GuestbookAdminList extends Component {
     }
 
     getEntries() {
+        const iconContainer = <Button color="danger" size="sm"/>;
+
         return this.props.entries.map((entry, key) => (
             <tr key={key}>
                 <td>{entry.title}</td>
                 <td>{entry.author}</td>
                 <td>{entry.date}</td>
-                <td>
+                <td className="text-center">
                     <Icon
                         onClick={this.deleteEntry}
-                        icon="fa-times"
+                        icon="fa fa-trash-o"
                         aria={true}
+                        wrapper={iconContainer}
                     />
                 </td>
             </tr>
