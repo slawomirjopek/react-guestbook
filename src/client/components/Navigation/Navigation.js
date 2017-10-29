@@ -8,9 +8,9 @@ const Navigation = () => {
             <NavItem>
                 <NavLink to="/" activeClassName="active" className="nav-link" exact>Guest book</NavLink>
             </NavItem>
-            <NavItem>
-                <NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>
-            </NavItem>
+            {/*<NavItem>*/}
+                {/*<NavLink to="/contact" activeClassName="active" className="nav-link">Contact</NavLink>*/}
+            {/*</NavItem>*/}
             <NavItem>
                 <NavLink to="/login" activeClassName="active" className="nav-link">Login</NavLink>
             </NavItem>

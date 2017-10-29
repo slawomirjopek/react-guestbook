@@ -41,7 +41,7 @@ const entryAdd = (entry) => (dispatch) => {
     })
 };
 
-const entryDelete = (entryId) => (dispatch, getState) => {
+const entryDelete = (entryId) => (dispatch) => {
     dispatch(guestbookActions.entryDelete());
 
     return axios.delete(

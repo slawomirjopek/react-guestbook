@@ -17,11 +17,14 @@ class GuestBookPage extends Component {
     }
 
     render() {
+        console.log(this.props.entries.length);
         return (
             <Row>
                 <Col xs="12" md="8">
-                    {this.props.fetched &&
+                    {this.props.entries.length ?
                         <GuestBookList entries={this.props.entries}/>
+                        :
+                        <p>There is no guestbook entries.</p>
                     }
                 </Col>
                 <Col xs="12" md="4">

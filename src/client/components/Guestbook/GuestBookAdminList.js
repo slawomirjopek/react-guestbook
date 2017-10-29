@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchEntries, entryDelete } from "../../effects/guestbook";
 import { Table } from 'reactstrap';
 import Icon from "../Icon/Icon";
+import Moment from 'react-moment';
 
 class GuestbookAdminList extends Component {
     componentDidMount() {
@@ -14,7 +15,7 @@ class GuestbookAdminList extends Component {
     render() {
         return (
             <div>
-                {this.props.fetched ?
+                {this.props.entries.length ?
                     <Table hover responsive>
                         <thead>
                         <tr>
@@ -29,7 +30,7 @@ class GuestbookAdminList extends Component {
                         </tbody>
                     </Table>
                     :
-                    <p>There is no guestbook entries</p>
+                    <p>There is no guestbook entries.</p>
                 }
             </div>
         )
@@ -40,7 +41,9 @@ class GuestbookAdminList extends Component {
             <tr key={key}>
                 <td>{entry.title}</td>
                 <td>{entry.author}</td>
-                <td>{entry.date}</td>
+                <td>
+                    <Moment format="DD-MM-YYYY HH:mm">{entry.date}</Moment>
+                </td>
                 <td className="text-center">
                     <Icon
                         onClick={this.iconClickHandler.bind(this)}
