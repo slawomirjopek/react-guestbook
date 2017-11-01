@@ -1,9 +1,8 @@
 import axios from "axios";
 import config from "../../../config/config";
-import TYPES from "../types/message";
 import loginActions from "../actions/login";
-import messageActions from "../actions/message";
 import storage from "../services/storage";
+import { dispatchError, dispatchSuccess } from "../helper/helper";
 
 const api = config.getConfig("api");
 
@@ -21,30 +20,19 @@ const requestLogin = (credentials) => (dispatch) => {
 
         if (!data.authenticated) {
             dispatch(loginActions.requestFailed(data.message));
-            return dispatch(messageActions.publishMessage({
-                message: data.message,
-                type: TYPES.MESSAGE_TYPES.DANGER
-            }));
+            return dispatchError(data.message);
         }
 
         dispatch(loginActions.requestSuccess(data));
-        dispatch(messageActions.publishMessage({
-            message: data.message,
-            type: TYPES.MESSAGE_TYPES.SUCCESS
-        }));
+        dispatchSuccess(data.message);
 
         storage.set({
             token: data.token,
             _id: data.user._id,
             login: data.user.login
-        });
+        })
     })
-    .catch(error => {
-        dispatch(messageActions.publishMessage({
-            message: error,
-            type: TYPES.MESSAGE_TYPES.DANGER
-        }))
-    })
+    .catch(error => dispatchError(error))
 };
 
 const logout = () => (dispatch) => {
@@ -53,11 +41,7 @@ const logout = () => (dispatch) => {
 
     // delete axios auth header
     delete axios.defaults.headers.common['Authorization'];
-
-    dispatch(messageActions.publishMessage({
-        message: "You have been logged out.",
-        type: TYPES.MESSAGE_TYPES.SUCCESS
-    }));
+    dispatchSuccess("You have been logged out.")
 };
 
 export { requestLogin, logout };

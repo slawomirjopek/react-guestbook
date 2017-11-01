@@ -2,11 +2,18 @@ import { store } from "../store/store";
 import TYPES from "../types/message";
 import messageActions from "../actions/message";
 
-const dispatchError = (err) => {
+const dispatchError = (message) => {
     store.dispatch(messageActions.publishMessage({
-        message: err,
+        message: message,
         type: TYPES.MESSAGE_TYPES.DANGER
     }));
 };
 
-export { dispatchError }
+const dispatchSuccess = (message) => {
+    store.dispatch(messageActions.publishMessage({
+        message: message,
+        type: TYPES.MESSAGE_TYPES.SUCCESS
+    }));
+};
+
+export { dispatchError, dispatchSuccess }

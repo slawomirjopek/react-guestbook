@@ -1,8 +1,7 @@
 import axios from "axios";
 import config from "../../../config/config";
-import TYPES from "../types/message";
 import guestbookActions from "../actions/guestbook";
-import messageActions from "../actions/message";
+import { dispatchError, dispatchSuccess } from "../helper/helper";
 
 const api = config.getConfig("api");
 
@@ -14,10 +13,7 @@ const fetchEntries = () => (dispatch) => {
         .then(data => dispatch(guestbookActions.entriesReceived(data)))
         .catch(err => {
             dispatch(guestbookActions.entriesFailed(err));
-            dispatch(messageActions.publishMessage({
-                message: err,
-                type: TYPES.MESSAGE_TYPES.DANGER
-            }));
+            dispatchError(err);
         })
 };
 
@@ -31,17 +27,11 @@ const entryAdd = (entry) => (dispatch) => {
     .then(res => res.data)
     .then(data => {
         dispatch(guestbookActions.entryUpdated(data));
-        dispatch(messageActions.publishMessage({
-            message: `Entry "${data.title}" added :)`,
-            type: TYPES.MESSAGE_TYPES.SUCCESS
-        }));
+        dispatchSuccess(`Entry "${data.title}" added :)`)
     })
     .catch(err => {
         dispatch(guestbookActions.entriesFailed(err));
-        dispatch(messageActions.publishMessage({
-            message: err,
-            type: TYPES.MESSAGE_TYPES.DANGER
-        }));
+        dispatchError(err)
     })
 };
 
@@ -56,17 +46,9 @@ const entryDelete = (entryId) => (dispatch) => {
         // update entries
         dispatch(guestbookActions.entryDeleted(data[0]));
         // @TODO response object not array!
-        dispatch(messageActions.publishMessage({
-            message: `Entry "${data[0].title}" deleted.`,
-            type: TYPES.MESSAGE_TYPES.SUCCESS
-        }));
+        dispatchSuccess(`Entry "${data[0].title}" deleted.`)
     })
-    .catch(err => {
-        dispatch(messageActions.publishMessage({
-            message: err,
-            type: TYPES.MESSAGE_TYPES.DANGER
-        }));
-    })
+    .catch(err => dispatchError(err))
 };
 
 export { fetchEntries, entryAdd, entryDelete }
