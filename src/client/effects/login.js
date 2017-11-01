@@ -13,19 +13,18 @@ const requestLogin = (credentials) => (dispatch) => {
     return axios.post(
         `${api.prefix}/${api.name.authenticate}`,
         credentials
-    ).then((response) => {
-        const data = response.data;
-
+    )
+    .then(res => res.data)
+    .then((data) => {
         // set axios to send auth with every request
         axios.defaults.headers.common['Authorization'] = data.token;
 
-        if (!response.data.authenticated) {
+        if (!data.authenticated) {
             dispatch(loginActions.requestFailed(data.message));
-            dispatch(messageActions.publishMessage({
+            return dispatch(messageActions.publishMessage({
                 message: data.message,
                 type: TYPES.MESSAGE_TYPES.DANGER
             }));
-            return;
         }
 
         dispatch(loginActions.requestSuccess(data));
@@ -35,17 +34,18 @@ const requestLogin = (credentials) => (dispatch) => {
         }));
 
         storage.set({
-            token: response.data.token,
-            _id: response.data.user._id,
-            login: response.data.user.login
+            token: data.token,
+            _id: data.user._id,
+            login: data.user.login
         });
-    }, (error) => {
+    })
+    .catch(error => {
         dispatch(messageActions.publishMessage({
             message: error,
             type: TYPES.MESSAGE_TYPES.DANGER
         }))
     })
-}
+};
 
 const logout = () => (dispatch) => {
     dispatch(loginActions.logout());
@@ -58,6 +58,6 @@ const logout = () => (dispatch) => {
         message: "You have been logged out.",
         type: TYPES.MESSAGE_TYPES.SUCCESS
     }));
-}
+};
 
 export { requestLogin, logout };

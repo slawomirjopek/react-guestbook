@@ -19,7 +19,7 @@ const reducer = (state = init, action) => {
         case TYPES.FETCH_RECEIVED:
             state = {
                 ...state,
-                entries: action.payload.data,
+                entries: action.payload,
                 loading: false,
                 fetched: true
             };

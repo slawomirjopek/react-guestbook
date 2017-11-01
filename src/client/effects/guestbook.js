@@ -9,15 +9,16 @@ const api = config.getConfig("api");
 const fetchEntries = () => (dispatch) => {
     dispatch(guestbookActions.getEntries());
 
-    return axios.get(`${api.prefix}/${api.name.guestbook}`).then((response) => {
-        dispatch(guestbookActions.entriesReceived(response));
-    }, (error) => {
-        dispatch(guestbookActions.entriesFailed(error));
-        dispatch(messageActions.publishMessage({
-            message: error,
-            type: TYPES.MESSAGE_TYPES.DANGER
-        }));
-    })
+    return axios.get(`${api.prefix}/${api.name.guestbook}`)
+        .then(res => res.data)
+        .then(data => dispatch(guestbookActions.entriesReceived(data)))
+        .catch(err => {
+            dispatch(guestbookActions.entriesFailed(err));
+            dispatch(messageActions.publishMessage({
+                message: err,
+                type: TYPES.MESSAGE_TYPES.DANGER
+            }));
+        })
 };
 
 const entryAdd = (entry) => (dispatch) => {
@@ -26,16 +27,19 @@ const entryAdd = (entry) => (dispatch) => {
     return axios.post(
         `${api.prefix}/${api.name.guestbook}`,
         entry
-    ).then((response) => {
-        dispatch(guestbookActions.entryUpdated(response.data));
+    )
+    .then(res => res.data)
+    .then(data => {
+        dispatch(guestbookActions.entryUpdated(data));
         dispatch(messageActions.publishMessage({
-            message: `Entry "${response.data.title}" added :)`,
+            message: `Entry "${data.title}" added :)`,
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
-    }, (error) => {
-        dispatch(guestbookActions.entriesFailed(error));
+    })
+    .catch(err => {
+        dispatch(guestbookActions.entriesFailed(err));
         dispatch(messageActions.publishMessage({
-            message: error,
+            message: err,
             type: TYPES.MESSAGE_TYPES.DANGER
         }));
     })
@@ -46,20 +50,23 @@ const entryDelete = (entryId) => (dispatch) => {
 
     return axios.delete(
         `${api.prefix}/${api.name.guestbook}/${entryId}`
-    ).then((response) => {
+    )
+    .then(res => res.data)
+    .then(data => {
         // update entries
-        dispatch(guestbookActions.entryDeleted(response.data[0]));
+        dispatch(guestbookActions.entryDeleted(data[0]));
         // @TODO response object not array!
         dispatch(messageActions.publishMessage({
-            message: `Entry "${response.data[0].title}" deleted.`,
+            message: `Entry "${data[0].title}" deleted.`,
             type: TYPES.MESSAGE_TYPES.SUCCESS
         }));
-    }, (error) => {
+    })
+    .catch(err => {
         dispatch(messageActions.publishMessage({
-            message: error.message,
+            message: err,
             type: TYPES.MESSAGE_TYPES.DANGER
         }));
     })
-}
+};
 
 export { fetchEntries, entryAdd, entryDelete }
