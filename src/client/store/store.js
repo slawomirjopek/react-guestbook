@@ -10,6 +10,6 @@ const reducers = {
     login,
     message
 };
-const store = createStore(combineReducers(reducers), applyMiddleware(logger, thunk));
+const store = createStore(combineReducers(reducers), applyMiddleware(/*logger, */thunk));
 
 export { store };

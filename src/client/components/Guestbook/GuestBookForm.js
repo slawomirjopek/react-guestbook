@@ -44,7 +44,7 @@ const submitAction = (data, props) => {
         author: data.name,
         content: data.content,
         title: data.title
-    })
+    });
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -72,7 +72,7 @@ const wrapped = FormWrapper(
     {
         name: "content",
         rules: [
-            {rule: /[0-9a-zA-Z]{6,255}$/i, message: "length min:6, max:255 chars: a-Z & numbers"}
+            {rule: /[0-9a-zA-Z]{6,255}/i, message: "length min:6, max:255 chars: a-Z & numbers"}
         ]
     }],
     submitAction

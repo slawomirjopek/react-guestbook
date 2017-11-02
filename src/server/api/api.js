@@ -145,62 +145,7 @@ app.post(getRoute(api.guestbook), (req, res) => {
 });
 
 /**
- * @api {post} /guestbook/category/ 4. Gets all entries from category/categories
- * @apiName GetEntryByCategory
- * @apiGroup Entry
- * @apiHeader {String[]} category List of categories
- * @apiSuccess {Object[]} entries Entries list
- * @apiSuccess {String} entries._id Entry id
- * @apiSuccess {String} entries.title Entry title
- * @apiSuccess {String} entries.author Entry author
- * @apiSuccess {Date} entries.date Creation date
- * @apiSuccess {String[]} entries.tags Entry tags
- * @apiSuccess {String[]} entries.category Entry categories
- */
-app.post(getRoute(api.guestbook, "category/"), (req, res) => {
-    const categories = {category: req.body.category};
-    // @TODO find by categories
-    //posts.find(categories, guestbookResponseHandler.bind(res));
-});
-
-/**
- * @api {post} /guestbook/tag/ 5. Gets all entries with tag/tags
- * @apiName GetEntryByTag
- * @apiGroup Entry
- * @apiHeader {String[]} tag List of tags
- * @apiSuccess {Object[]} entries Entries list
- * @apiSuccess {String} entries._id Entry id
- * @apiSuccess {String} entries.title Entry title
- * @apiSuccess {String} entries.author Entry author
- * @apiSuccess {Date} entries.date Creation date
- * @apiSuccess {String[]} entries.tags Entry tags
- * @apiSuccess {String[]} entries.category Entry categories
- */
-app.post(getRoute(api.guestbook, "tag/"), (req, res) => {
-    const tags = {tag: req.body.tag};
-    // @TODO find by tags
-    //posts.find(tags, guestbookResponseHandler.bind(res));
-});
-
-/**
- * @api {get} /guestbook/archive/:month 6. Gets entries from archive
- * @apiName GetArchive
- * @apiGroup Entry
- * @apiParam {String} month - Month name
- * @apiSuccess {Object[]} entries Entries list
- * @apiSuccess {String} entries._id Entry id
- * @apiSuccess {String} entries.title Entry title
- * @apiSuccess {String} entries.author Entry author
- * @apiSuccess {Date} entries.date Creation date
- * @apiSuccess {String[]} entries.tags Entry tags
- * @apiSuccess {String[]} entries.category Entry categories
- */
-app.get(getRoute(api.guestbook, "archive/:month"), (req, res) => {
-    // @TODO get all entries from selected month
-});
-
-/**
- * @api {delete} /guestbook/:id 7. Delete entry
+ * @api {delete} /guestbook/:id 4. Delete entry
  * @apiName DeleteEntry
  * @apiGroup Entry
  * @apiParam {Number} id Entry unique id
@@ -216,29 +161,6 @@ app.delete(getRoute(api.guestbook, ":id"), apiRoutes, (req, res) => {
             res.json(data)
         })
     });
-});
-
-/**
- * @api {put} /guestbook/:id 8. Edit entry
- * @apiName EditEntry
- * @apiGroup Entry
- * @apiParam {Number} id Entry unique id
- * @apiHeader {Object} entry Entry
- * @apiHeader {String} [entry.title] Entry title
- * @apiHeader {String} [entry.author] Entry author
- * @apiHeader {Date} [entry.date] Entry author
- * @apiHeader {String[]} [entry.tags] Entry tags
- * @apiHeader {String[]} [entry.category] Entry categories
- * @apiSuccess {Object[]} entries Entries list
- * @apiSuccess {String} entries._id Entry id
- * @apiSuccess {String} entries.title Entry title
- * @apiSuccess {String} entries.author Entry author
- * @apiSuccess {Date} entries.date Creation date
- * @apiSuccess {String[]} entries.tags Entry tags
- * @apiSuccess {String[]} entries.category Entry categories
- */
-app.put(getRoute(api.guestbook, ":id"), (req, res) => {
-    // @TODO edit entry
 });
 
 app.listen(server.port, () => {

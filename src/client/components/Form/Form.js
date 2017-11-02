@@ -15,6 +15,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
         }
 
         render() {
+            const childProps = this.getChildProps();
             return (
                 <Form
                     onSubmit={this.submitHandler.bind(this)}
@@ -22,7 +23,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
                 >
                     <WrappedComponent
                         formState={this.state}
-                        {...this.props}
+                        { ...childProps }
                     />
                 </Form>
             )
@@ -49,7 +50,7 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             const data = this.getFormData(e.target);
 
             if (this.state.formValid) {
-                submitAction(data, this.props)
+                submitAction(data, this.getChildProps())
             }
         }
 
@@ -106,8 +107,16 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             });
         }
 
+        markAsPristine(fieldName, callback) {
+            this.updateField(fieldName, { pristine: true }, callback)
+        }
+
         unmarkAsPristine(fieldName, callback) {
             this.updateField(fieldName, { pristine: false }, callback)
+        }
+
+        getChildProps() {
+            return { ...this.props, cleanForm: this.cleanForm.bind(this) }
         }
     }
 };

@@ -49,9 +49,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        requestLogin: (credentials) => {
-            dispatch(requestLogin(credentials))
-        }
+        requestLogin: (credentials) => dispatch(requestLogin(credentials))
     }
 };
 

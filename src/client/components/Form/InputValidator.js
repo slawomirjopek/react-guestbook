@@ -7,8 +7,9 @@ class InputValidator extends Component {
     }
 
     render() {
-        const inputProps = {
-            autoComplete: "off"
+        let inputProps = {
+            autoComplete: "off",
+            value: this.props.inputState.value
         };
 
         if (!this.props.inputState.valid && !this.props.inputState.pristine) {
