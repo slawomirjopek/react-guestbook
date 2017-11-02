@@ -4,6 +4,7 @@ import GuestBookList from "../Guestbook/GuestBookList";
 import GuestBookForm from "../Guestbook/GuestBookForm";
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
+import Loader from "../Loader/Loader";
 
 class GuestBookPage extends Component {
     constructor() {
@@ -25,6 +26,8 @@ class GuestBookPage extends Component {
                         :
                         <p>There is no guestbook entries.</p>
                     }
+
+                    {!this.props.entries.length && this.props.loading && <Loader/>}
                 </Col>
                 <Col xs="12" md="4">
                     <GuestBookForm/>

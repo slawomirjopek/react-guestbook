@@ -5,7 +5,7 @@ const Loader = () => {
     const spinnerBody = [];
 
     while (spinnerBody.length < 12) {
-        spinnerBody.push(<div></div>)
+        spinnerBody.push(<div key={spinnerBody.length}></div>)
     }
 
     return (

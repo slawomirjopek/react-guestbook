@@ -6,6 +6,7 @@ import { store } from "./store/store";
 import loginActions from "./actions/login";
 import Template from "./components/Template/Template";
 import "bootstrap/dist/css/bootstrap.css";
+import "./styles/general.scss";
 import axios from "axios";
 
 // check data from sessionStorage

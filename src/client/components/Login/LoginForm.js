@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import FormWrapper from "../Form/Form";
 import InputValidator from "../Form/InputValidator";
 import { requestLogin } from "../../effects/login";
+import Loader from "../Loader/Loader";
 
 class LoginForm extends Component {
     constructor() {
@@ -29,6 +30,8 @@ class LoginForm extends Component {
                     type="submit"
                     disabled={!this.props.formState.formValid}
                 >Login</Button>
+
+                {this.props.loading && <Loader/>}
             </div>
         )
     }
@@ -36,6 +39,12 @@ class LoginForm extends Component {
 
 const submitAction = (data, props) => {
     props.requestLogin({ ...data });
+};
+
+const mapStateToProps = (state) => {
+    return {
+        loading: state.login.loading
+    }
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -63,4 +72,4 @@ const wrapped = FormWrapper(
     submitAction
 );
 
-export default connect(null, mapDispatchToProps)(wrapped);
+export default connect(mapStateToProps, mapDispatchToProps)(wrapped);

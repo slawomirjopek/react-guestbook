@@ -4,6 +4,7 @@ import { fetchEntries, entryDelete } from "../../effects/guestbook";
 import { Table } from 'reactstrap';
 import Icon from "../Icon/Icon";
 import Moment from 'react-moment';
+import Loader from "../Loader/Loader";
 
 class GuestbookAdminList extends Component {
     componentDidMount() {
@@ -14,7 +15,7 @@ class GuestbookAdminList extends Component {
 
     render() {
         return (
-            <div>
+            <div className="position-relative">
                 {this.props.entries.length ?
                     <Table hover responsive>
                         <thead>
@@ -32,6 +33,8 @@ class GuestbookAdminList extends Component {
                     :
                     <p>There is no guestbook entries.</p>
                 }
+
+                {this.props.loading && <Loader/>}
             </div>
         )
     }
@@ -65,7 +68,8 @@ class GuestbookAdminList extends Component {
 const mapStateToProps = (state) => {
     return {
         entries: state.guestbook.entries,
-        fetched: state.guestbook.fetched
+        fetched: state.guestbook.fetched,
+        loading: state.guestbook.loading
     }
 };
 
