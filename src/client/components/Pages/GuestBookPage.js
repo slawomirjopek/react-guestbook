@@ -17,12 +17,11 @@ class GuestBookPage extends Component {
     }
 
     render() {
-        console.log(this.props.entries.length);
         return (
             <Row>
                 <Col xs="12" md="8">
                     {this.props.entries.length ?
-                        <GuestBookList entries={this.props.entries}/>
+                        <GuestBookList entries={this.props.entries} loading={this.props.loading}/>
                         :
                         <p>There is no guestbook entries.</p>
                     }
@@ -38,7 +37,8 @@ class GuestBookPage extends Component {
 const mapStateToProps = (state) => {
     return {
         entries: state.guestbook.entries,
-        fetched: state.guestbook.fetched
+        fetched: state.guestbook.fetched,
+        loading: state.guestbook.loading
     }
 };
 

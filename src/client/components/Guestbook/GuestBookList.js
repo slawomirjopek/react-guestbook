@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Moment from 'react-moment';
 import { Jumbotron, Button } from "reactstrap";
+import Loader from "../Loader/Loader";
+import "./guestbook-list.scss";
 
 const GuestBookList = (props) => {
     const entries = props.entries.map((entry, key) => (
@@ -35,8 +37,9 @@ const GuestBookList = (props) => {
     ));
 
     return (
-        <div>
+        <div className="guestbook-list">
             {entries}
+            {props.loading && <Loader/>}
         </div>
     )
 };

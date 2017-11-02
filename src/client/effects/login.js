@@ -14,7 +14,7 @@ const requestLogin = (credentials) => (dispatch) => {
         credentials
     )
     .then(res => res.data)
-    .then((data) => {
+    .then(data => {
         // set axios to send auth with every request
         axios.defaults.headers.common['Authorization'] = data.token;
 
