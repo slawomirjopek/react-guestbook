@@ -115,6 +115,11 @@ const FromWrapper = (WrappedComponent, fieldsState, submitAction) => {
             this.updateField(fieldName, { pristine: false }, callback)
         }
 
+        cleanForm() {
+            const keys = Object.keys(this.state.fields);
+            //@TODO clear all fields, form status etc...
+        }
+
         getChildProps() {
             return { ...this.props, cleanForm: this.cleanForm.bind(this) }
         }
