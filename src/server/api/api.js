@@ -88,7 +88,7 @@ app.post(getRoute(api.authenticate), (req, res) => {
 });
 
 /**
- * @api {get} /guestbook/ 1. Get entries
+ * @api {get} /guestbook/ Get entries
  * @apiName GetEntries
  * @apiGroup Entry
  * @apiSuccess {Object[]} entries Entries list
@@ -104,7 +104,29 @@ app.get(getRoute(api.guestbook), (req, res) => {
 });
 
 /**
- * @api {get} /guestbook/:id 2. Get entry by id
+ * @api {get} /guestbook/ Get entries (range)
+ * @apiName GetEntries
+ * @apiGroup Entry
+ * @apiParam {Number} offset (range start)
+ * @apiParam {Number} limit (range from offset)
+ * @apiSuccess {Object[]} entries Entries list
+ * @apiSuccess {String} entries._id Entry id
+ * @apiSuccess {String} entries.title Entry title
+ * @apiSuccess {String} entries.author Entry author
+ * @apiSuccess {Date} entries.date Creation date
+ * @apiSuccess {String[]} entries.tags Entry tags
+ * @apiSuccess {String[]} entries.category Entry categories
+ */
+app.get(getRoute(api.guestbook, ":offset/:limit"), (req, res) => {
+    const skip = Number(req.params.offset);
+    const limit = Number(req.params.limit);
+
+    posts.find(guestbookResponseHandler.bind(res))
+         .skip(skip).limit(limit);
+});
+
+/**
+ * @api {get} /guestbook/:id Get entry by id
  * @apiName GetEntry
  * @apiGroup Entry
  * @apiParam {Number} id Entry unique id
@@ -122,7 +144,7 @@ app.get(getRoute(api.guestbook, ":id"), (req, res) => {
 });
 
 /**
- * @api {post} /guestbook/ 3. Create entry/entries
+ * @api {post} /guestbook/ Create entry/entries
  * @apiName CreateEntry
  * @apiGroup Entry
  * @apiHeader {Object/Object[]} entry Entry/List of entries
