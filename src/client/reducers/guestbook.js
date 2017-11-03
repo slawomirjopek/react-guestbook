@@ -34,7 +34,7 @@ const reducer = (state = init, action) => {
         case TYPES.ENTRY_UPDATED:
             state = {
                 ...state,
-                entries: state.entries.concat(action.payload),
+                entries: [action.payload, ...state.entries],
                 loading: false
             };
             break;

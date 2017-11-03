@@ -100,7 +100,8 @@ app.post(getRoute(api.authenticate), (req, res) => {
  * @apiSuccess {String[]} entries.category Entry categories
  */
 app.get(getRoute(api.guestbook), (req, res) => {
-    posts.find(guestbookResponseHandler.bind(res));
+    posts.find(guestbookResponseHandler.bind(res))
+        .sort({date: -1});
 });
 
 /**
@@ -122,7 +123,9 @@ app.get(getRoute(api.guestbook, ":offset/:limit"), (req, res) => {
     const limit = Number(req.params.limit);
 
     posts.find(guestbookResponseHandler.bind(res))
-         .skip(skip).limit(limit);
+        .skip(skip)
+        .limit(limit)
+        .sort({date: -1});
 });
 
 /**
