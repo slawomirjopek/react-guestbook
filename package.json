@@ -67,16 +67,14 @@
     "description": "Training purposes api project",
     "title": "Guestbook API",
     "url": "",
-    "sampleUrl": "http://localhost:12647",
+    "sampleUrl": "http://localhost:5900",
     "order": [
       "GetEntries",
+      "GetEntriesRange",
+      "GetEntriesPage",
       "GetEntry",
       "CreateEntry",
-      "GetEntryByCategory",
-      "GetEntryByTag",
-      "GetArchive",
-      "DeleteEntry",
-      "EditEntry"
+      "DeleteEntry"
     ],
     "template": {
       "withCompare": false,

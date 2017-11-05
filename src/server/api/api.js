@@ -105,8 +105,8 @@ app.get(getRoute(api.guestbook), (req, res) => {
 });
 
 /**
- * @api {get} /guestbook/ Get entries (range)
- * @apiName GetEntries
+ * @api {get} /guestbook/range/:offset/:limit Get entries (range)
+ * @apiName GetEntriesRange
  * @apiGroup Entry
  * @apiParam {Number} offset (range start)
  * @apiParam {Number} limit (range from offset)
@@ -118,14 +118,53 @@ app.get(getRoute(api.guestbook), (req, res) => {
  * @apiSuccess {String[]} entries.tags Entry tags
  * @apiSuccess {String[]} entries.category Entry categories
  */
-app.get(getRoute(api.guestbook, ":offset/:limit"), (req, res) => {
-    const skip = Number(req.params.offset);
-    const limit = Number(req.params.limit);
+app.get(getRoute(api.guestbook, "range/:offset/:limit"), (req, res) => {
+    const skip = Number(req.params.offset) || 0;
+    const limit = Number(req.params.limit) || 5;
 
     posts.find(guestbookResponseHandler.bind(res))
         .skip(skip)
         .limit(limit)
         .sort({date: -1});
+});
+
+/**
+ * @api {get} /guestbook/page/:page Get entries (page)
+ * @apiName GetEntriesPage
+ * @apiGroup Entry
+ * @apiParam {Number} page (page to display)
+ * @apiSuccess {Object} entries Entries data
+ * @apiSuccess {Object[]} entries.entries Entries list
+ * @apiSuccess {String} entries.entries._id Entry id
+ * @apiSuccess {String} entries.entries.title Entry title
+ * @apiSuccess {String} entries.entries.author Entry author
+ * @apiSuccess {Date} entries.entries.date Creation date
+ * @apiSuccess {String[]} entries.entries.tags Entry tags
+ * @apiSuccess {String[]} entries.entries.category Entry categories
+ * @apiSuccess {Object} entries.pagination Pagination data
+ */
+app.get(getRoute(api.guestbook, "page/:page"), (req, res) => {
+    let page = Number(req.params.page) || 1;
+    let skip = (page - 1) * 5;
+    const limit = 5;
+
+    posts.count().then(postQty => {
+        const pages = Math.ceil(postQty/limit);
+
+        posts.find((err, data) => {
+            if (err) return errorHandle.bind(this, err)();
+            res.json({
+                entries: [...data],
+                pagination: {
+                    page: page,
+                    pages: pages
+                }
+            });
+        })
+        .skip(skip)
+        .limit(limit)
+        .sort({date: -1});
+    })
 });
 
 /**
@@ -142,7 +181,7 @@ app.get(getRoute(api.guestbook, ":offset/:limit"), (req, res) => {
  * @apiSuccess {String[]} entries.category Entry categories
  */
 app.get(getRoute(api.guestbook, ":id"), (req, res) => {
-    const query = {_id: req.params.id};
+    const query = {_id: req.params.id || 0};
     posts.find(query, guestbookResponseHandler.bind(res));
 });
 
@@ -179,7 +218,7 @@ app.post(getRoute(api.guestbook), (req, res) => {
  * @apiSuccess {Number} response.ok 0/1
  */
 app.delete(getRoute(api.guestbook, ":id"), apiRoutes, (req, res) => {
-    const query = {_id: req.params.id};
+    const query = {_id: req.params.id || 0};
 
     posts.find(query, (err, data) => {
         posts.remove(query, () => {
@@ -193,8 +232,13 @@ app.listen(server.port, () => {
 });
 
 function guestbookResponseHandler(err, data) {
-    if (err) throw err;
+    if (err) return errorHandle.bind(this, err)();
     this.json(data);
+}
+
+function errorHandle(err) {
+    console.log("Error: ", err.message);
+    return this.status(500).end();
 }
 
 function getRoute(api, route) {
