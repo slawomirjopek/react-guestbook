@@ -33,7 +33,8 @@ apiRoutes.use((req, res, next) => {
         // status 403 - forbidden
         return res.status(403).send({
             message: "No token provided.",
-            authenticated: false
+            authenticated: false,
+            status: "AUTH_ERROR"
         })
     }
 
@@ -42,7 +43,8 @@ apiRoutes.use((req, res, next) => {
         if (err) {
             return res.status(403).json({
                 message: "Bad token.",
-                authenticated: false
+                authenticated: false,
+                status: "AUTH_ERROR"
             })
         }
 
@@ -209,7 +211,7 @@ app.post(getRoute(api.guestbook), (req, res) => {
 });
 
 /**
- * @api {delete} /guestbook/:id 4. Delete entry
+ * @api {delete} /guestbook/:id Delete entry
  * @apiName DeleteEntry
  * @apiGroup Entry
  * @apiParam {Number} id Entry unique id
