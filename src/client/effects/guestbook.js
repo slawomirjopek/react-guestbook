@@ -17,6 +17,20 @@ const fetchEntries = () => (dispatch) => {
         })
 };
 
+const fetchEntriesPage = () => (dispatch, getState) => {
+    const page = getState().guestbook.pagination.page || 0;
+    console.log(getState().guestbook.pagination);
+    dispatch(guestbookActions.getEntries());
+
+    return axios.get(`${api.prefix}/${api.name.guestbook}/page/${page+1}`)
+        .then(res => res.data)
+        .then(data => dispatch(guestbookActions.entriesReceived(data)))
+        .catch(err => {
+            dispatch(guestbookActions.entriesFailed(err));
+            dispatchError(err);
+        })
+};
+
 const entryAdd = (entry) => (dispatch) => {
     dispatch(guestbookActions.getEntries());
 
@@ -59,4 +73,4 @@ const entryDelete = (entryId) => (dispatch) => {
     })
 };
 
-export { fetchEntries, entryAdd, entryDelete }
+export { fetchEntries, fetchEntriesPage, entryAdd, entryDelete }

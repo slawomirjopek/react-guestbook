@@ -14,7 +14,7 @@ const reducers = {
 const store = createStore(
     combineReducers(reducers),
     applyMiddleware(
-        /*logger, */
+        logger,
         redirectMiddleware,
         thunk
     )

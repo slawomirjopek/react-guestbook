@@ -5,7 +5,11 @@ const init = {
     entries: [],
     loading: false,
     fetched: false,
-    error: null
+    error: null,
+    pagination: {
+        page: null,
+        pages: null
+    }
 };
 
 const reducer = (state = init, action) => {
@@ -16,14 +20,22 @@ const reducer = (state = init, action) => {
                 loading: true
             };
             break;
-        case TYPES.FETCH_RECEIVED:
+        case TYPES.FETCH_RECEIVED: {
+            let entries = action.payload;
+
+            if (action.payload.entries) {
+                entries = state.entries.concat(action.payload.entries)
+            }
+
             state = {
                 ...state,
-                entries: action.payload,
+                entries: entries,
                 loading: false,
-                fetched: true
+                fetched: true,
+                pagination: action.payload.pagination || state.pagination
             };
             break;
+        }
         case TYPES.FETCH_FAILED:
             state = {
                 ...state,
