@@ -75,7 +75,7 @@ app.post(getRoute(api.authenticate), (req, res) => {
 
         // user & password match then create jwt token
         const payload = { login: user.login };
-        const settings = { expiresIn : 20 }; //1440
+        const settings = { expiresIn : 1440 };
         const token = jwt.sign(payload, app.get("jwtSecret"), settings);
 
         res.json({
