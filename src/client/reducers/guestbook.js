@@ -55,6 +55,12 @@ const reducer = (state = init, action) => {
                 loading: false
             };
             break;
+        case TYPES.NOT_DELETED:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
     }
     return state;
 };

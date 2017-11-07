@@ -39,6 +39,13 @@ const actions = {
             type: TYPES.DELETED,
             payload: deletedEntry
         }
+    },
+
+    entryNotDeleted: (status) => {
+        return {
+            type: TYPES.NOT_DELETED,
+            status: status
+        }
     }
 };
 

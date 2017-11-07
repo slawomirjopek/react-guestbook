@@ -33,8 +33,7 @@ apiRoutes.use((req, res, next) => {
         // status 403 - forbidden
         return res.status(403).send({
             message: "No token provided.",
-            authenticated: false,
-            status: "AUTH_ERROR"
+            authenticated: false
         })
     }
 
@@ -43,8 +42,7 @@ apiRoutes.use((req, res, next) => {
         if (err) {
             return res.status(403).json({
                 message: "Bad token.",
-                authenticated: false,
-                status: "AUTH_ERROR"
+                authenticated: false
             })
         }
 
@@ -77,7 +75,7 @@ app.post(getRoute(api.authenticate), (req, res) => {
 
         // user & password match then create jwt token
         const payload = { login: user.login };
-        const settings = { expiresIn : 1440 };
+        const settings = { expiresIn : 20 }; //1440
         const token = jwt.sign(payload, app.get("jwtSecret"), settings);
 
         res.json({

@@ -31,7 +31,7 @@ const entryAdd = (entry) => (dispatch) => {
     })
     .catch(err => {
         dispatch(guestbookActions.entriesFailed(err));
-        dispatchError(err)
+        dispatchError(err);
     })
 };
 
@@ -48,7 +48,15 @@ const entryDelete = (entryId) => (dispatch) => {
         // @TODO response object not array!
         dispatchSuccess(`Entry "${data[0].title}" deleted.`)
     })
-    .catch(err => dispatchError(err))
+    .catch(err => {
+        const status = err.response.status || 200;
+        dispatch(guestbookActions.entryNotDeleted(status));
+
+        if (err.response.data.message) {
+            return dispatchError(err.response.data.message);
+        }
+        dispatchError(err);
+    })
 };
 
 export { fetchEntries, entryAdd, entryDelete }
