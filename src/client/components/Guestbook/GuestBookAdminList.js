@@ -68,14 +68,14 @@ class GuestbookAdminList extends Component {
 const mapStateToProps = (state) => {
     return {
         entries: state.guestbook.entries,
-        fetched: state.guestbook.fetched,
+        fetched: state.guestbook.fetched.admin,
         loading: state.guestbook.loading
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: () => dispatch(fetchEntries()),
+        fetchData: () => dispatch(fetchEntries("admin")),
         deleteEntry: (entryId) => {
             dispatch(entryDelete(entryId))
         }

@@ -5,26 +5,26 @@ import { dispatchError, dispatchSuccess } from "../helper/helper";
 
 const api = config.getConfig("api");
 
-const fetchEntries = () => (dispatch) => {
+const fetchEntries = (target) => (dispatch) => {
     dispatch(guestbookActions.getEntries());
 
     return axios.get(`${api.prefix}/${api.name.guestbook}`)
         .then(res => res.data)
-        .then(data => dispatch(guestbookActions.entriesReceived(data)))
+        .then(data => dispatch(guestbookActions.entriesReceived(data, target)))
         .catch(err => {
             dispatch(guestbookActions.entriesFailed(err));
             dispatchError(err);
         })
 };
 
-const fetchEntriesPage = () => (dispatch, getState) => {
-    const page = getState().guestbook.pagination.page || 0;
-    console.log(getState().guestbook.pagination);
+const fetchEntriesPage = (target) => (dispatch, getState) => {
+    let page = getState().guestbook.pagination.page || 0;
+
     dispatch(guestbookActions.getEntries());
 
     return axios.get(`${api.prefix}/${api.name.guestbook}/page/${page+1}`)
         .then(res => res.data)
-        .then(data => dispatch(guestbookActions.entriesReceived(data)))
+        .then(data => dispatch(guestbookActions.entriesReceived(data, target, true)))
         .catch(err => {
             dispatch(guestbookActions.entriesFailed(err));
             dispatchError(err);

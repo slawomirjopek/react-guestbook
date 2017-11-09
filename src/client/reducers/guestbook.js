@@ -3,12 +3,17 @@ const _ = require("lodash");
 
 const init = {
     entries: [],
+    entriesTemp: [],
     loading: false,
-    fetched: false,
     error: null,
     pagination: {
         page: null,
+        pageTemp: null,
         pages: null
+    },
+    fetched: {
+        home: false,
+        admin: false
     }
 };
 
@@ -21,19 +26,28 @@ const reducer = (state = init, action) => {
             };
             break;
         case TYPES.FETCH_RECEIVED: {
-            let entries = action.payload;
+            let entries = _.isArray(action.payload.entries) ? action.payload.entries : action.payload;
 
-            if (action.payload.entries) {
-                entries = state.entries.concat(action.payload.entries)
+            if (action.payload.pagination) {
+                entries = state.entriesTemp.concat(action.payload.entries);
+                state.entriesTemp = entries;
+
+                if (state.fetched[action.target]) {
+                    entries = state.entries.concat(action.payload.entries)
+                }
             }
 
             state = {
                 ...state,
                 entries: entries,
                 loading: false,
-                fetched: true,
-                pagination: action.payload.pagination || state.pagination
+                pagination: action.payload.pagination || state.pagination,
+                fetched: {
+                    ...init.fetched,
+                    [action.target]: true
+                }
             };
+
             break;
         }
         case TYPES.FETCH_FAILED:
@@ -47,6 +61,7 @@ const reducer = (state = init, action) => {
             state = {
                 ...state,
                 entries: [action.payload, ...state.entries],
+                entriesTemp: [action.payload, ...state.entries],
                 loading: false
             };
             break;
@@ -61,9 +76,14 @@ const reducer = (state = init, action) => {
                 state.entries, (entry) => entry._id !== action.payload._id
             );
 
+            const entriesTemp = _.filter(
+                state.entriesTemp, (entry) => entry._id !== action.payload._id
+            );
+
             state = {
                 ...state,
                 entries,
+                entriesTemp,
                 loading: false
             };
             break;

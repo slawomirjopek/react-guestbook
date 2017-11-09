@@ -21,7 +21,7 @@ class GuestBookPage extends Component {
         let showLoadMore = true;
 
         if (this.props.pagination.page !== null &&
-            this.props.pagination.page === this.props.pagination.pages) {
+            this.props.pagination.page >= this.props.pagination.pages) {
             showLoadMore = false;
         }
 
@@ -60,7 +60,7 @@ class GuestBookPage extends Component {
 const mapStateToProps = (state) => {
     return {
         entries: state.guestbook.entries,
-        fetched: state.guestbook.fetched,
+        fetched: state.guestbook.fetched.home,
         loading: state.guestbook.loading,
         pagination: state.guestbook.pagination
     }
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchData: () => {
-            dispatch(fetchEntriesPage())
+            dispatch(fetchEntriesPage("home"))
         }
     }
 };

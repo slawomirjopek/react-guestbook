@@ -7,10 +7,12 @@ const actions = {
         }
     },
 
-    entriesReceived: (entries) => {
+    entriesReceived: (entries, target, pagination) => {
         return {
             type: TYPES.FETCH_RECEIVED,
-            payload: entries
+            payload: entries,
+            target: target,
+            pagination: pagination || false
         }
     },
 
