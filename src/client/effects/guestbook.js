@@ -19,6 +19,17 @@ const fetchEntries = (target) => (dispatch) => {
 
 const fetchEntriesPage = (target) => (dispatch, getState) => {
     let page = getState().guestbook.pagination.page || 0;
+    const temp = getState().guestbook.entriesTemp;
+    const fetched = getState().guestbook.fetched[target];
+
+    // if return from other view get entries from temp
+    if (temp.length && !fetched) {
+        const data = {
+            entries: temp,
+            pagination: { ...getState().guestbook.pagination }
+        };
+        return dispatch(guestbookActions.entriesReceived(data, target, true))
+    }
 
     dispatch(guestbookActions.getEntries());
 

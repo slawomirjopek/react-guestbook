@@ -26,12 +26,23 @@ const reducer = (state = init, action) => {
             };
             break;
         case TYPES.FETCH_RECEIVED: {
+            // detect if full list / list with pagination
             let entries = _.isArray(action.payload.entries) ? action.payload.entries : action.payload;
+            let entriesTemp = state.entriesTemp;
 
+            // if pagination type transform entries
             if (action.payload.pagination) {
-                entries = state.entriesTemp.concat(action.payload.entries);
+                // @TODO needed to detect changes if list was updated (added new/deleted)
+
+                // save current list
                 state.entriesTemp = entries;
 
+                if (state.entriesTemp.length) {
+                    const diff = _.difference(entriesTemp, entries);
+                    state.entriesTemp = diff.concat(entries);
+                }
+
+                // if already on pagination type page set new list
                 if (state.fetched[action.target]) {
                     entries = state.entries.concat(action.payload.entries)
                 }
