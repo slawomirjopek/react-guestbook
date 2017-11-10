@@ -14,7 +14,9 @@ const init = {
     fetched: {
         home: false,
         admin: false
-    }
+    },
+    added: 0,
+    deleted: 0
 };
 
 const reducer = (state = init, action) => {
@@ -56,7 +58,9 @@ const reducer = (state = init, action) => {
                 fetched: {
                     ...init.fetched,
                     [action.target]: true
-                }
+                },
+                added: 0,
+                deleted: 0
             };
 
             break;
@@ -69,11 +73,13 @@ const reducer = (state = init, action) => {
             };
             break;
         case TYPES.ENTRY_UPDATED:
+            const added = state.added + 1;
             state = {
                 ...state,
                 entries: [action.payload, ...state.entries],
                 entriesTemp: [action.payload, ...state.entries],
-                loading: false
+                loading: false,
+                added
             };
             break;
         case TYPES.DELETE:
@@ -91,18 +97,21 @@ const reducer = (state = init, action) => {
                 state.entriesTemp, (entry) => entry._id !== action.payload._id
             );
 
+            let deleted = state.deleted + 1;
+
             state = {
                 ...state,
                 entries,
                 entriesTemp,
-                loading: false
+                loading: false,
+                deleted
             };
             break;
         case TYPES.NOT_DELETED:
             state = {
                 ...state,
                 loading: false
-            }
+            };
             break;
     }
     return state;
