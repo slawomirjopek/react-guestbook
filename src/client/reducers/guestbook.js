@@ -89,15 +89,19 @@ const reducer = (state = init, action) => {
             };
             break;
         case TYPES.DELETED:
+            let deleted = state.deleted;
+
             const entries = _.filter(
                 state.entries, (entry) => entry._id !== action.payload._id
             );
 
             const entriesTemp = _.filter(
-                state.entriesTemp, (entry) => entry._id !== action.payload._id
+                state.entriesTemp, (entry) => {
+                    if (entry._id !== action.payload._id) return true;
+                    // if deleted entry founded in temp incerse counter
+                    deleted = state.deleted + 1;
+                }
             );
-
-            let deleted = state.deleted + 1;
 
             state = {
                 ...state,
