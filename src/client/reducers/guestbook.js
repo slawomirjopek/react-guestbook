@@ -36,7 +36,6 @@ const reducer = (state = init, action) => {
             if (action.payload.pagination) {
                 // @TODO needed to detect changes if list was updated (added new/deleted)
 
-                // save current list
                 state.entriesTemp = entries;
 
                 if (state.entriesTemp.length) {
@@ -58,9 +57,7 @@ const reducer = (state = init, action) => {
                 fetched: {
                     ...init.fetched,
                     [action.target]: true
-                },
-                added: 0,
-                deleted: 0
+                }
             };
 
             break;
@@ -115,6 +112,22 @@ const reducer = (state = init, action) => {
             state = {
                 ...state,
                 loading: false
+            };
+            break;
+        case TYPES.RESET_COUNTERS:
+            state = {
+                ...state,
+                added: 0,
+                deleted: 0
+            };
+            break;
+        case TYPES.SET_PAGE:
+            state = {
+                ...state,
+                pagination: {
+                    ...state.pagination,
+                    page: action.page
+                }
             };
             break;
     }

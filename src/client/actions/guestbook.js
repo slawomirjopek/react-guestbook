@@ -48,6 +48,19 @@ const actions = {
             type: TYPES.NOT_DELETED,
             status: status
         }
+    },
+
+    resetCounters: () => {
+        return {
+            type: TYPES.RESET_COUNTERS
+        }
+    },
+
+    setPage: (page) => {
+        return {
+            type: TYPES.SET_PAGE,
+            page
+        }
     }
 };
 
