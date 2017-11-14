@@ -21,6 +21,7 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
     let page = getState().guestbook.pagination.page || 0;
     const temp = getState().guestbook.entriesTemp;
     const fetched = getState().guestbook.fetched[target];
+    const added = getState().guestbook.added;
 
     // if return from other view get entries from temp
     if (temp.length && !fetched) {
@@ -29,6 +30,12 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
             pagination: { ...getState().guestbook.pagination }
         };
         return dispatch(guestbookActions.entriesReceived(data, target, true))
+    }
+
+    // if added any new entries
+    if (added) {
+        // @TODO modyfy request
+        dispatch(guestbookActions.resetCounters());
     }
 
     dispatch(guestbookActions.getEntries());
