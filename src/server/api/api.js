@@ -157,7 +157,8 @@ app.get(getRoute(api.guestbook, "page/:page"), (req, res) => {
                 entries: [...data],
                 pagination: {
                     page: page,
-                    pages: pages
+                    pages: pages,
+                    entries: postQty
                 }
             });
         })

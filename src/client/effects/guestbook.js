@@ -34,7 +34,10 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
 
     // if added any new entries
     if (added) {
-        // @TODO modyfy request
+        // determine current page & new pages after manual update
+        const entriesQty = getState().guestbook.pagination.entries;
+        const pages = Math.ceil((entriesQty + added) / 5);
+
         dispatch(guestbookActions.resetCounters());
     }
 
