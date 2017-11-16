@@ -38,14 +38,11 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
         const entriesQty = getState().guestbook.pagination.entries;
         const rangeMin = entries.length;
         const rangeMax = (Math.ceil(rangeMin / 5) * 5) - (Math.ceil(added / 5) * 5) - (added % 5);
-        const pageCurrent = Math.ceil(rangeMin / 5);
+        let pageCurrent = Math.ceil(rangeMin / 5);
         const pageMax = Math.ceil((entriesQty + added) / 5);
         endpoint = `range/${rangeMin}/${rangeMax}`;
 
-        console.log("rangeMin", rangeMin);
-        console.log("rangeMax", rangeMax);
-        console.log("pageCurrent", pageCurrent);
-        console.log("pageMax", pageMax);
+        if (!(rangeMin % 5)) pageCurrent++;
 
         dispatch(guestbookActions.resetCounters());
         dispatch(guestbookActions.setPage(pageCurrent, pageMax));
