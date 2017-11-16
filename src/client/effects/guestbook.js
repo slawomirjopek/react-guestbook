@@ -34,20 +34,21 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
         return dispatch(guestbookActions.entriesReceived(data, target, true))
     }
 
-    // if added any new entries
-    if (added) {
-        // determine current page & new pages after manual update
+    if (added && entries.length > 5) {
         const entriesQty = getState().guestbook.pagination.entries;
-        //const pages = Math.ceil((entriesQty + added) / 5);
-        const rangeStart = entries.length;
-        let rangeEnd = 5 - added; // should be rounded
+        const rangeMin = entries.length;
+        const rangeMax = (Math.ceil(rangeMin / 5) * 5) - (Math.ceil(added / 5) * 5) - (added % 5);
+        const pageCurrent = Math.ceil(rangeMin / 5);
+        const pageMax = Math.ceil((entriesQty + added) / 5);
+        endpoint = `range/${rangeMin}/${rangeMax}`;
 
-        const newPage = Math.ceil(entries.length / 5);
-        const maxPage = Math.ceil(entriesQty / 5);
-        endpoint = `range/${rangeStart}/${rangeEnd}`;
+        console.log("rangeMin", rangeMin);
+        console.log("rangeMax", rangeMax);
+        console.log("pageCurrent", pageCurrent);
+        console.log("pageMax", pageMax);
 
         dispatch(guestbookActions.resetCounters());
-        dispatch(guestbookActions.setPage(newPage, maxPage))
+        dispatch(guestbookActions.setPage(pageCurrent, pageMax));
     }
 
     dispatch(guestbookActions.getEntries());
