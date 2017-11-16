@@ -22,6 +22,8 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
     const temp = getState().guestbook.entriesTemp;
     const fetched = getState().guestbook.fetched[target];
     const added = getState().guestbook.added;
+    const entries = getState().guestbook.entries;
+    let endpoint = `page/${page+1}`;
 
     // if return from other view get entries from temp
     if (temp.length && !fetched) {
@@ -36,14 +38,21 @@ const fetchEntriesPage = (target) => (dispatch, getState) => {
     if (added) {
         // determine current page & new pages after manual update
         const entriesQty = getState().guestbook.pagination.entries;
-        const pages = Math.ceil((entriesQty + added) / 5);
+        //const pages = Math.ceil((entriesQty + added) / 5);
+        const rangeStart = entries.length;
+        let rangeEnd = 5 - added; // should be rounded
+
+        const newPage = Math.ceil(entries.length / 5);
+        const maxPage = Math.ceil(entriesQty / 5);
+        endpoint = `range/${rangeStart}/${rangeEnd}`;
 
         dispatch(guestbookActions.resetCounters());
+        dispatch(guestbookActions.setPage(newPage, maxPage))
     }
 
     dispatch(guestbookActions.getEntries());
 
-    return axios.get(`${api.prefix}/${api.name.guestbook}/page/${page+1}`)
+    return axios.get(`${api.prefix}/${api.name.guestbook}/${endpoint}`)
         .then(res => res.data)
         .then(data => dispatch(guestbookActions.entriesReceived(data, target, true)))
         .catch(err => {

@@ -126,7 +126,8 @@ const reducer = (state = init, action) => {
                 ...state,
                 pagination: {
                     ...state.pagination,
-                    page: action.page
+                    page: action.page,
+                    pages: action.pages
                 }
             };
             break;

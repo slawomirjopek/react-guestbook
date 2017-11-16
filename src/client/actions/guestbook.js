@@ -56,10 +56,11 @@ const actions = {
         }
     },
 
-    setPage: (page) => {
+    setPage: (page, pages) => {
         return {
             type: TYPES.SET_PAGE,
-            page
+            page,
+            pages
         }
     }
 };
