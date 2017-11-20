@@ -32,8 +32,8 @@ const reducer = (state = init, action) => {
             let entries = _.isArray(action.payload.entries) ? action.payload.entries : action.payload;
             let entriesTemp = state.entriesTemp;
 
-            // if pagination type transform entries
-            if (action.payload.pagination) {
+            // if pagination type or should be paginated transform entries
+            if (action.payload.pagination || action.pagination) {
                 state.entriesTemp = entries;
 
                 if (state.entriesTemp.length) {
@@ -43,7 +43,7 @@ const reducer = (state = init, action) => {
 
                 // if already on pagination type page set new list
                 if (state.fetched[action.target]) {
-                    entries = state.entries.concat(action.payload.entries)
+                    entries = state.entries.concat(entries)
                 }
             }
 
