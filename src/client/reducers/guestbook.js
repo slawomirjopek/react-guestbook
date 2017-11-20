@@ -34,8 +34,6 @@ const reducer = (state = init, action) => {
 
             // if pagination type transform entries
             if (action.payload.pagination) {
-                // @TODO needed to detect changes if list was updated (added new/deleted)
-
                 state.entriesTemp = entries;
 
                 if (state.entriesTemp.length) {
